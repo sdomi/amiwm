@@ -44,6 +44,8 @@ Contributions by
 * Nicolas Sipieter
 * redsPL.
 
+## Previous repositories
+Previously, amiwm was using bzr instead of git; The bzr repository can be found [here](http://mc.pp.se/bzr/amiwm/)
 ## License
 This project is published under a custom license - see [LICENSE.md](LICENSE.md) for details.
 
