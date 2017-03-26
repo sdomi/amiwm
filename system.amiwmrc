@@ -1,0 +1,10 @@
+FastQuit Off
+SizeBorder Right
+IconPalette MagicWB
+DefaultIcon "def_tool.info"
+CustomIconsOnly Off
+ShortLabelIcons Off
+TitlebarClock Off
+TitleClockFormat "%c"
+Screen "Workbench Screen"
+Module "Keyboard" "Meta<M>:all:rotatescreens"

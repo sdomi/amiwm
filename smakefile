@@ -1,0 +1,47 @@
+
+PROGRAMS = amiwm requestchoice
+
+AMIWM_HOME = amiwm:
+
+SRCS1 = main.c drawinfo.c client.c frame.c icc.c \
+	icon.c menu.c diskobject.c gram.c lex.c rc.c
+OBJS1 = main.o drawinfo.o client.o frame.o icc.o \
+	icon.o menu.o diskobject.o gram.o lex.o rc.o
+
+SRCS2 = requestchoice.c drawinfo.c
+OBJS2 = requestchoice.o drawinfo.o
+
+
+all : $(PROGRAMS)
+
+amiwm : $(OBJS1)
+	sc LINK PNAME amiwm $(OBJS1)
+
+requestchoice : $(OBJS2)
+	sc LINK PNAME requestchoice $(OBJS2)
+
+gram.c : gram.y
+	bison -y -d -o gram.c gram.y
+
+lex.c : lex.l
+	flex -t < lex.l > lex.c
+
+gram.o : gram.c
+
+lex.o : lex.c
+
+menu.o : menu.c
+	sc menu DEF AMIWM_HOME="$(AMIWM_HOME)"
+
+rc.o : rc.c
+	sc rc DEF AMIWM_HOME="$(AMIWM_HOME)"
+
+clean : tidy
+	-delete FORCE $(PROGRAMS)
+
+tidy :
+	-delete FORCE \#?.(o|q|tmp|lnk) lex.c gram.c gram.h core
+
+install :
+	copy amiwm requestchoice system.amiwmrc def_tool.info $(AMIWM_HOME)
+

@@ -1,0 +1,45 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+SHELL = /bin/sh
+CC = @CC@
+LEX = @LEX@
+YACC = @YACC@
+RANLIB = @RANLIB@
+CFLAGS = @CFLAGS@
+YFLAGS = -d
+DEFS = @DEFS@
+ALL_CFLAGS = -I@srcdir@ -I@top_srcdir@ $(DEFS) $(CFLAGS) @X_CFLAGS@
+LIBS = @X_LIBS@ @X_PRE_LIBS@ -lXext -lXmu -lX11 @X_EXTRA_LIBS@ @LIBS@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+bindir = $(exec_prefix)/bin
+libdir = $(exec_prefix)/lib
+INSTALL = @INSTALL@
+LN_S = @LN_S@
+
+OBJS  = drawinfo.o module.o broker.o eventdispatcher.o mdscreen.o \
+	mdicon.o mdwindow.o kbdsupport.o hotkey.o \
+	lists.o readargs.o iconlib.o iconutil.o error.o strutil.o \
+	iffparse.o
+
+SRCS = drawinfo.c module.c broker.c eventdispatcher.c mdscreen.c \
+	mdicon.c mdwindow.c kbdsupport.c hotkey.c \
+	lists.c readargs.c iconlib.c iconutil.c error.c strutil.c \
+	iffparse.c
+
+all : libami.a
+
+libami.a : $(OBJS)
+	ar rc libami.a $(OBJS)
+	$(RANLIB) libami.a
+
+.c.o:
+	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) $<
+
+depend: $(SRCS)
+	-@rm Makefile.bak
+	mv Makefile Makefile.bak
+	( sed '/^#--DO NOT REMOVE THIS LINE--$$/q' < Makefile.bak ; \
+	  $(CC) -MM $(ALL_CFLAGS) $(SRCS) ) > Makefile
+
+#--DO NOT REMOVE THIS LINE--

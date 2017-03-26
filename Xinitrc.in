@@ -1,0 +1,18 @@
+#!/bin/ksh 
+# AmiWM startup script
+
+xrdb $OPENWINHOME/lib/Xdefaults		# Load Default X11 resource database
+if [ -f $HOME/.Xdefaults ]; then
+    xrdb -merge $HOME/.Xdefaults	# Load Users X11 resource database
+fi
+
+xsetroot -solid black
+@bindir@/amiwm & wmpid=$!
+
+if [ -x $HOME/.amiwm-init ]; then
+    $HOME/.amiwm-init			# Custom amiwm tools
+else
+    @AMIWM_HOME@/amiwm-init   	# Default amiwm tools
+fi
+
+wait $wmpid				# Wait for wm (key client) to exit

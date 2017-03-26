@@ -1,0 +1,17 @@
+!!######################################################################
+!!
+!!   Xresources.amiwm
+!!
+!!   Configuration file for the amiwm alternate desktop resources 
+!!
+!!######################################################################
+!!
+!!  This file used by the Solaris Desktop Login manager
+
+
+Dtlogin*altDtsIncrement:	True
+
+Dtlogin*altDtName:	AmiWM Desktop
+Dtlogin*altDtKey:	@bindir@/amiwm
+Dtlogin*altDtStart:	@AMIWM_HOME@/Xsession
+Dtlogin*altDtLogo:	Amilogo

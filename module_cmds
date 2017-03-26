@@ -1,0 +1,18 @@
+%{
+#include <stdlib.h>
+#include <string.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+#include <X11/Xlib.h>
+#include "module.h"
+%}
+struct module_cmd ;
+%%
+NOP, MCMD_NOP
+GET_VERSION, MCMD_GET_VERSION
+LIST_SCREENS, MCMD_LIST_SCREENS
+SEND_EVENT, MCMD_SEND_EVENT
+SET_BROKER, MCMD_SET_BROKER
+%%
+

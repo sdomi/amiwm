@@ -1,0 +1,26 @@
+#!/bin/ksh 
+
+if [ -z "$SESSIONTYPE" ]
+then
+	export SESSIONTYPE="altDt"
+fi
+
+if [ -z "$DTSTARTIMS" ]
+then
+	export DTSTARTIMS="False"
+fi
+
+if [ -z "$SDT_ALT_SESSION" ]
+then
+	export SDT_ALT_SESSION="@AMIWM_HOME@/Xsession2"
+fi
+
+if [ -z "$SDT_ALT_HELLO" ]
+then
+  export SDT_ALT_HELLO="/usr/dt/bin/dthello -string 'Starting the AmiWM Desktop' &"
+fi
+
+export SDT_NO_DSDM=""
+
+
+/usr/dt/bin/Xsession

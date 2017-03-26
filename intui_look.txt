@@ -1,0 +1,157 @@
+
+wwwwwwwwwwwwwwwwwww          wwwwww
+bkwbbbbbbbbbbbkkbbb .XX....  ..|||k
+bkwbbbbbbbbbbbkkbbb .XX....  ..|||k
+bkwbbbbbbbbbbbkkbbb .XX....  ..|||k
+bkwbbbbbbbbbbbkkbbb .XX....  ..|||k
+bkwbbbbbbbbbbbkkbbb .XX....  ..|||k
+bkwbbbbbbbbbbbkkbbb .XX....  ..|||k
+bkwbbbbbbbbbbbkkkkk .XXXXXX
+bkwbbbbbbbbbbbbbbbb .......
+bkwbbbbbbbbbbbbbbbb
+kkkkkkkkkkkkkkkkkkk
+
+H=48
+h=11
+HH=78
+
+
+ 0        -------    0    --------    0    -----------   0        ---------   0    ---------
+
+14(3)[23] -------    9(2) --------    9(2) ----------- > 8(2)[12]<---------  32(2) ---------
+           close            zoom              depth                 icon1            icon2
+33(7)[54] -------   24(5) --------   19(4) -----------  35(4)     ---------  35(4) ---------
+
+47        -------   38(8) --------   28(6) -----------  37(6)     ---------  37(6) ---------
+
+                    47    --------   38(8) ----------- >39(8)[65]<--------- >39(8)<---------
+
+                                     47    -----------  47        ---------  47    ---------
+
+
+h0  0  0  0      i1h1  8(2) [h1-e]
+h2  9  2  1/5    i1h2 39(8) [h7+e]
+h3 14  3  3/10
+h4 19  4  2/5
+h5 24  5  1/2
+h6 28  6  3/5
+h7 33  7  7/10
+h8 38  8  4/5
+h10 47 10  0-e
+
+
+h0 0/10
+h2 2/10
+h3 3/10
+h4 4/10
+h5 5/10
+h6 6/10
+h7 7/10
+h8 8/10
+h10 10/10-e
+
+ 0 *
+ 1
+ 2
+ 3
+ 4             10
+ 5            9
+ 6          78
+ 7
+ 8         6
+ 9 *      5    10
+10            9
+11
+12       4   8
+13          7
+14 *           10
+15
+16      3  6  9
+17
+18           8
+19 *      5    10      0 *
+20          7          1       678910
+21            9        2 *   45  8910
+22                     3 *  3  67 910
+23                     4 *    5 78910
+24 *   2 4 6 8 10      5 * 2 4 6 8 10
+25                     6 *    5 78910
+26            9        7 *  3  67 910
+27          7          8 *   45  8910
+28 *      5    10      9       678910
+29                    10 *
+30           8
+31
+32      3  6  9
+33 *           10
+34          7
+35
+36       4   8
+37            9
+38 *      5    10
+39
+40         6
+41          7
+42           89
+43             10
+44
+45
+46
+47 *
+
+
+
+
+wwwwwwwwwwwwwwwwwwwwwwwwwww        wwKKKKKKKKKKKKKKKKKKKKKKKww
+bkwbbbbbbbbbbbbbbbbbbbbbkwb x7(1)  bkKbbbbbbbbbbbbbbbbbbbbbWwb x31(1)
+bkwbbbbkkkkkkkkkkkkkbbbbkwb        bkKbbbbkkkkkkkkkkkkkbbbbWwb
+bkwbbbbkbbbbbbbbbbbkbbbbkwb x26(1) bkKbbbbkbbbbbbbbbbbkbbbbWwb x2(1) (2 if h>11)
+bkwbbbbkbkkkkbbbbbbkbbbbkwb        bkKbbbbkbkkkkbbbbbbkbbbbWwb
+bkwbbbbkbkwwkbbbbbbkbbbbkwb x1     bkKbbbbkbkwwkbbbbbbkbbbbWwb x1
+bkwbbbbkbkkkkbbbbbbkbbbbkwb        bkKbbbbkbkkkkbbbbbbkbbbbWwb
+bkwbbbbkbbbbbbbbbbbkbbbbkwb x1     bkKbbbbkbbbbbbbbbbbkbbbbWwb x1
+bkwbbbbkkkkkkkkkkkkkbbbbkwb        bkKbbbbkkkkkkkkkkkkkbbbbWwb
+bkwbbbbbbbbbbbbbbbbbbbbbkwb x7(1)  bkKbbbbbbbbbbbbbbbbbbbbbWwb x7(1)
+kkkkkkkkkkkkkkkkkkkkkkkkkkk        kkWWWWWWWWWWWWWWWWWWWWWWWkk
+
+
+wwwwwwwwwwwwwwwwwwwwww        wwwwwwwwwwwwwwwwwwwwwwwwwww        wwwwwwwwwwwwwwwwwwwwwwwww
+wbbbbbbbbbbbbbbbbbkwbb x13(2) bkwbbbbbbbbbbbbbbbbbbbbbkwb x8(1)  bkwbbbbbbbbbbbbbbbbbbbbbk x8(1)
+wbbbbbbkkkkkbbbbbbkwbb        bkwbbbbkkkkkkkkkkkkkbbbbkwb        bkwbbbkkkkkkkkkkkbbbbbbbk
+wbbbbbbkwwwkbbbbbbkwbb x18(3) bkwbbbbkkwwwkkbbbbbkbbbbkwb x14(2) bkwbbbk         kbbbbbbbk x9(1)
+wbbbbbbkkkkkbbbbbbkwbb        bkwbbbbkkkkkkkbbbbbkbbbbkwb        bkwbbbk   kkkkkkkkkkkbbbk
+wbbbbbbbbbbbbbbbbbkwbb x13(2) bkwbbbbkbbbbbbbbbbbkbbbbkwb x13(2) bkwbbbk   kwwwwwwwwwkbbbk x8(1)
+wkkkkkkkkkkkkkkkkkkkkk        bkwbbbbkkkkkkkkkkkkkbbbbkwb        bkwbbbkkkkkwwwwwwwwwkbbbk
+wbbk                          bkwbbbbbbbbbbbbbbbbbbbbbkwb x8(1)  bkwbbbbbbbkwwwwwwwwwkbbbk x9(1)
+wbbk                          kkkkkkkkkkkkkkkkkkkkkkkkkkk        bkwbbbbbbbkkkkkkkkkkkbbbk
+                                                                 bkwbbbbbbbbbbbbbbbbbbbbbk x8(1)
+                                                                 kkkkkkkkkkkkkkkkkkkkkkkkk
+                                                                                      wbbk
+
+KKKKKKKKKKKKKKKKKKKwww        wwKKKKKKKKKKKKKKKKKKKKKKKww        wwKKKKKKKKKKKKKKKKKKKKKKK
+KbbbbbbbbbbbbbbbbbWwbb x13(2) bkKbbbbbbbbbbbbbbbbbbbbbWwb x8(1)  bkKbbbbbbbbbbbbbbbbbbbbbW x8(1)
+KbbbbbbkkkkkbbbbbbWwbb        bkKbbbbkkkkkkkkkkkkkbbbbWwb        bkKbbbkkkkkkkkkkkbbbbbbbW
+Kbbbbbbk···kbbbbbbWwbb x18(3) bkKbbbbkkBBBkkWWWWWkbbbbWwb x14(2) bkKbbbk         kbbbbbbbW x9(1)
+KbbbbbbkkkkkbbbbbbWwbb        bkKbbbbkkkkkkkWWWWWkbbbbWwb        bkKbbbk   kkkkkkkkkkkbbbW
+KbbbbbbbbbbbbbbbbbWwbb x13(2) bkKbbbbkWWWWWWWWWWWkbbbbWwb x13(2) bkKbbbk   kwwwwwKwwwkbbbW x8(1)
+wWWWWWWWWWWWWWWWWWWkkk        bkKbbbbkkkkkkkkkkkkkbbbbWwb        bkKbbbkkkkkKKKKKKwwwkbbbW
+wbbk                          bkKbbbbbbbbbbbbbbbbbbbbbWwb x8(1)  bkKbbbbbbbkwwwwwwwwwkbbbW x9(1)
+wbbk                          kkWWWWWWWWWWWWWWWWWWWWWWWkk        bkKbbbbbbbkkkkkkkkkkkbbbW
+                                                                 bkKbbbbbbbbbbbbbbbbbbbbbW x8(1)
+                                                                 kkWWWWWWWWWWWWWWWWWWWWWWW
+                                                                                      wbbk
+
+
+                        wbbbbbbbbbbbbbbbbk
+                    wwwwwwwwwwwwwwwwwwwwwk
+                      bbwbbbbbbbbbbbbbbbbk
+                       bwbbbbbbbbbbbkkkbbk
+                        wbbbbbbbbbkkwwkbbk
+                        wbbbbbbbkkwwwwkbbk
+wbbk                    wbbbbbkkwwwwwwkbbk
+wbbk                    wbbbkkwwwwwwwwkbbk
+wbbk                    wbbbkkkkkkkkkkkbbk
+wbbkwwwwwwwwwwww      wwwbbbbbbbbbbbbbbbbk
+wkkkkkkkkkkkkkkk      kkkkkkkkkkkkkkkkkkkk
+
+

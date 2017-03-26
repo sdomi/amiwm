@@ -1,0 +1,34 @@
+#!/bin/ksh 
+
+unset SDT_ALT_SESSION
+unset SDT_ALT_HELLO
+unset SDT_NO_DSDM
+
+#
+# Find "xinitrc" file by standard precedence rules and start 
+# the user's AmiWM Desktop.
+#
+
+DEFAULT_XINITRC="@AMIWM_HOME@/Xinitrc"
+HOME_XINITRC="$HOME/.xinitrc"
+
+    if [ -z "$XINITRC" ]; then
+	if [ -f $HOME_XINITRC ]; then
+	    XINITRC=$HOME_XINITRC
+	else
+	    XINITRC=$DEFAULT_XINITRC
+	fi
+    fi
+
+    echo "AmiWM Desktop Login"
+
+    if [ -f $XINITRC ]; then
+	echo "using xinitrc file: $XINITRC"
+        /bin/ksh $XINITRC
+    else
+	echo "xinitrc file: $XINITRC not found"
+	if [ -f $DEFAULT_XINITRC ]; then
+	    echo "using xinitrc: $DEFAULT_XINITRC"
+	    /bin/ksh $DEFAULT_XINITRC 
+	fi
+    fi
