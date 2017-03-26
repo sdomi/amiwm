@@ -1,0 +1,3 @@
+#!/bin/sh
+
+xterm -sb -sl 1000 -C -geometry 80x16+0-0 -name Console &
