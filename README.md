@@ -46,4 +46,5 @@ Contributions by
 
 ## License
 This project is published under a custom license - see [LICENSE.md](LICENSE.md) for details.
+
 Amiga, AmigaOS and Workbench are registered trademarks of AMIGA International Inc.
