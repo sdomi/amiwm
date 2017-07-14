@@ -326,8 +326,8 @@ static void incoming_event(struct module *m, struct mcmd_event *me)
 
 void mod_menuselect(struct module *m, int menu, int item, int subitem)
 {
-  fprintf(stderr, "Nu valde någon minsann menyitem %d:%d:%d.\n"
-	  "Man kanske skulle berätta detta för modul %d\n?",
+  fprintf(stderr, "No value assigned for menu item %d:%d:%d.\n"
+	  "Read manual for module %d\n?",
 	  menu, item, subitem, (int)m->pid);
 }
 

@@ -19,7 +19,8 @@
      " " LF "version "VERSION LF "by Marcus Comstedt" LF \
      "<marcus@lysator.liu.se>" LF " " LF \
      "Contributions by Scott Lawrence" LF "<amiwm10@umlautllama.com>" LF \
-     "and Nicolas Sipieter " LF "<freeeaks@gmail.com>" LF " " LF
+     "and Nicolas Sipieter " LF "<freeeaks@gmail.com>" LF " " LF \
+     "Some small contributions by redsPL" LF "<reds@sakamoto.pl>" LF " " LF
 
 #ifdef AMIGAOS
 #include <pragmas/xlib_pragmas.h>
@@ -408,15 +409,17 @@ void createmenubar()
   scr->subspace=scr->hotkeyspace-scr->dri.dri_Ascent;
   scr->menuleft=4;
   m=add_menu("Workbench", 0);
-  add_item(m,"Backdrop",'B',CHECKIT|CHECKED|DISABLED);
+  //add_item(m,"Backdrop",'B',CHECKIT|CHECKED|DISABLED);
   add_item(m,"Execute Command...",'E',0);
+  add_item(m,"Configuration",'C',0);
   add_item(m,"Redraw All",0,0);
-  add_item(m,"Update All",0,DISABLED);
-  add_item(m,"Last Message",0,DISABLED);
+  //add_item(m,"Update All",0,DISABLED);
+  //add_item(m,"Last Message",0,DISABLED);
+  add_item(m,NULL,0,DISABLED);
   add_item(m,"About...",'?',0);
   add_item(m,"Quit...",'Q',0);
   menu_layout(m);
-  m=add_menu("Window", 0);
+  /*m=add_menu("Window", 0);
   add_item(m,"New Drawer",'N',DISABLED);
   add_item(m,"Open Parent",0,DISABLED);
   add_item(m,"Close",'K',DISABLED);
@@ -437,8 +440,8 @@ void createmenubar()
   menu_layout(m);
   menu_layout(sm1);
   menu_layout(sm2);
-  menu_layout(sm3);
-  m=add_menu("Icons", DISABLED);
+  menu_layout(sm3);*/
+  /*m=add_menu("Icons", DISABLED);
   add_item(m,"Open",'O',DISABLED);
   add_item(m,"Copy",'C',DISABLED);
   add_item(m,"Rename...",'R',DISABLED);
@@ -451,7 +454,7 @@ void createmenubar()
   add_item(m,"Delete...",'D',DISABLED);
   add_item(m,"Format Disk...",0,DISABLED);
   add_item(m,"Empty Trash",0,DISABLED);
-  menu_layout(m);
+  menu_layout(m);*/
   m=add_menu("Tools", 0);
 #ifdef AMIGAOS
   add_item(m,"ResetWB",0,DISABLED);
@@ -711,9 +714,11 @@ void menuaction(struct Item *i, struct Item *si)
   switch(menu) {
   case 0: /* Workbench */
     switch(item) {
-    case 1:
+    case 0:
       spawn(BIN_PREFIX"executecmd");
       break;
+    case 1:
+      spawn(BIN_PREFIX"config_util");
     case 2:
       {
 	XSetWindowAttributes xswa;
@@ -731,7 +736,7 @@ void menuaction(struct Item *i, struct Item *si)
 	XDestroyWindow(dpy, win);
       }
       break;
-    case 5:
+    case 4:
 #ifdef AMIGAOS
       spawn(BIN_PREFIX"requestchoice >NIL: amiwm \""
 	    ABOUT_STRING("*N") "\" Ok");
@@ -740,7 +745,7 @@ void menuaction(struct Item *i, struct Item *si)
 	    ABOUT_STRING("\n") "' Ok");
 #endif
       break;      
-    case 6:
+    case 5:
 #ifndef AMIGAOS
       if(prefs.fastquit) {
 #endif
@@ -761,7 +766,7 @@ void menuaction(struct Item *i, struct Item *si)
       break;
     }
     break;
-  case 1: /* Window */
+ /* case 1: // Window
     switch(item) {
     case 4:
       select_all_icons(scr);
@@ -770,10 +775,10 @@ void menuaction(struct Item *i, struct Item *si)
       cleanupicons();
       break;
     }
-    break;
-  case 2: /* Icons */
-    break;
-  case 3: /* Tools */
+    break; */
+//  case 2: /* Icons */
+//      break;
+  case 1: /* Tools */
 #ifndef AMIGAOS
     if(item==0)
       restart_amiwm();

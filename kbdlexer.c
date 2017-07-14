@@ -1,5 +1,6 @@
 int yywrap() { return 1; }
 
+
 #line 2 "<stdout>"
 
 #define  YY_INT_ALIGNED short int

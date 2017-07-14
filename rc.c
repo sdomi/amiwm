@@ -45,6 +45,7 @@ void read_rc_file(char *filename, int manage_all)
   prefs.screenmenu=False;
   prefs.firststyle=NULL;
   prefs.laststyle=NULL;
+  prefs.icontray=TRUE;
   set_sys_palette();
 
   if(filename!=NULL && (rcfile=fopen(filename, "r"))) {

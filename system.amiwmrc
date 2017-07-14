@@ -1,6 +1,7 @@
 FastQuit Off
 SizeBorder Right
 IconPalette MagicWB
+IconDir "/usr/lib/amiwm/"
 DefaultIcon "def_tool.info"
 CustomIconsOnly Off
 ShortLabelIcons Off

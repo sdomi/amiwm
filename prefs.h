@@ -16,6 +16,7 @@ extern struct prefs_struct {
   int titlebarclock;			/* display titlebar clock? */
   char *titleclockformat;		/* format to use for the clock */
   int titleclockinterval;		/* how often do we update the clock?*/
+  int icontray;				// if true then icons will be shown in a tray on top of each screen (besides clock and screen name)
   struct _Style *firststyle, *laststyle;
 } prefs;
 

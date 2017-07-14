@@ -22,9 +22,9 @@ LIBAMI = libami/libami.a
 DT_DIR = /etc/dt
 STRIPFLAG = -s
 
-PROGS = amiwm requestchoice executecmd ppmtoinfo
+PROGS = amiwm requestchoice executecmd ppmtoinfo config_util
 
-MODULES = $(srcdir)/Background Keyboard Launcher
+MODULES = $(srcdir)/Background Keyboard
 
 OBJS  = main.o screen.o client.o frame.o icc.o \
 		icon.o menu.o diskobject.o gram.o lex.o rc.o \
@@ -34,7 +34,7 @@ SRCS = main.c screen.c client.c frame.c icc.c \
 		icon.c menu.c diskobject.c gram.c lex.c rc.c \
 		module.c \
 		requestchoice.c executecmd.c kbdmodule.c kbdlexer.c \
-		launchermodule.c
+		config_util.c
 
 DISTFILES = README README.modules INSTALL LICENSE amiwm.1 \
 	configure configure.in Makefile.in install-sh smakefile scoptions \
@@ -45,6 +45,7 @@ DISTFILES = README README.modules INSTALL LICENSE amiwm.1 \
 PACKAGENAME = amiwm
 
 AMIWM_HOME = $(libdir)/amiwm
+AMIWM_LIBS = /lib/amiwm
 
 all : lib_all
 	@$(MAKE) local_all
@@ -90,13 +91,15 @@ kbdlexer.c : kbdlexer.l
 
 install : $(PROGS) $(MODULES) Xsession Xsession2 Xinitrc amiwm-init
 	-mkdir -p $(AMIWM_HOME)
+	-mkdir -p $(AMIWM_LIBS)
 	$(INSTALL) $(STRIPFLAG) requestchoice $(AMIWM_HOME)/requestchoice
+	$(INSTALL) $(STRIPFLAG) config_util $(AMIWM_HOME)/config_util
 	$(INSTALL) $(STRIPFLAG) executecmd $(AMIWM_HOME)/executecmd
 	for module in $(MODULES); do \
 	  if [ "$$module" = "$(srcdir)/Background" ]; then \
-	    $(INSTALL) $$module $(AMIWM_HOME)/Background; \
+	    $(INSTALL) $$module $(AMIWM_LIBS)/Background; \
 	  else \
-	    $(INSTALL) $(STRIPFLAG) $$module $(AMIWM_HOME)/$$module; \
+	    $(INSTALL) $(STRIPFLAG) $$module $(AMIWM_LIBS)/$$module; \
 	  fi; \
 	done
 	$(INSTALL) -m 644 $(srcdir)/system.amiwmrc $(AMIWM_HOME)/system.amiwmrc
@@ -135,6 +138,9 @@ amiwm : $(OBJS) $(LIBAMI)
 requestchoice : requestchoice.o $(LIBAMI)
 	$(CC) -o requestchoice requestchoice.o $(LIBS)
 
+config_util : config_util.o $(LIBAMI)
+	$(CC) -o config_util config_util.o $(LIBS)
+
 executecmd : executecmd.o $(LIBAMI)
 	$(CC) -o executecmd executecmd.o $(LIBS)
 
@@ -144,9 +150,6 @@ Filesystem : filesystem.o $(LIBAMI)
 Keyboard : kbdmodule.o kbdlexer.o $(LIBAMI)
 	$(CC) -o Keyboard kbdmodule.o kbdlexer.o $(LIBS)
 
-Launcher : launchermodule.o $(LIBAMI)
-	$(CC) -o Launcher launchermodule.o $(LIBS)
-
 ppmtoinfo : ppmtoinfo.o
 	$(CC) -o ppmtoinfo ppmtoinfo.o -lm
 
@@ -154,7 +157,7 @@ localetest : localetest.o $(LIBAMI)
 	$(CC) -o localetest localetest.o $(LIBS)
 
 clean :
-	$(RM) core $(PROGS) $(LIBAMI) Keyboard Launcher *.o libami/*.o
+	$(RM) core $(PROGS) $(LIBAMI) Keyboard *.o libami/*.o
 	$(RM) lex.yy.c lex.c y.tab.c y.tab.h gram.h gram.c
 	$(RM) kbdlexer.c kbdmodule.h kbdmodule.c
 	$(RM) config.log

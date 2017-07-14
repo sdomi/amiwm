@@ -44,23 +44,6 @@
 #include "icc.h"
 #include "libami.h"
 
-#ifdef AMIGAOS
-#include <pragmas/xlib_pragmas.h>
-extern struct Library *XLibBase;
-
-struct timeval {
-  long tv_sec;
-  long tv_usec;
-};
-
-#define fd_set XTransFdset
-#undef FD_ZERO
-#undef FD_SET
-#define FD_ZERO XTransFdZero
-#define FD_SET XTransFdSet
-#define select XTransSelect
-#endif
-
 #define HYSTERESIS 5
 
 typedef struct _DragIcon {
@@ -547,7 +530,7 @@ void aborticondragging()
 void badicondrop()
 {
   wberror(dragiconlist[0].icon->scr,
-	  "Icons cannot be moved into this window");
+	  "Icon can't be moved into this window");
   aborticondragging();
 }
 
