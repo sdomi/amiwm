@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ "$3" = "0x00000000" ]; then
+  display -resize $(xwininfo -root | grep geometry | sed -s "s/-geometry //" | sed -s "s/+0+0//")\! -window root "$4" > /dev/null
+else
+  display -resize $(xwininfo -root | grep geometry | sed -s "s/-geometry //" | sed -s "s/+0+0//")\! -window "$3" "$4" > /dev/null
+fi

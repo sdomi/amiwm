@@ -24,7 +24,7 @@ STRIPFLAG = -s
 
 PROGS = amiwm requestchoice executecmd ppmtoinfo config_util
 
-MODULES = $(srcdir)/Background Keyboard
+MODULES = $(srcdir)/Background $(srcdir)/Keyboard $(srcdir)/Background_resize
 
 OBJS  = main.o screen.o client.o frame.o icc.o \
 		icon.o menu.o diskobject.o gram.o lex.o rc.o \
@@ -39,13 +39,13 @@ SRCS = main.c screen.c client.c frame.c icc.c \
 DISTFILES = README README.modules INSTALL LICENSE amiwm.1 \
 	configure configure.in Makefile.in install-sh smakefile scoptions \
 	*.[chly] system.amiwmrc def_*.info *.map \
-	Background Xresources.amiwm.in Amilogo.?m Xsession*.in Xinitrc.in \
-	amiwm-init libami/Makefile.in libami/*.[chly]
+	Background Background_resize Xresources.amiwm.in Amilogo.?m \
+	Xsession*.in Xinitrc.in amiwm-init libami/Makefile.in libami/*.[chly] \
 
 PACKAGENAME = amiwm
 
 AMIWM_HOME = $(libdir)/amiwm
-AMIWM_LIBS = /lib/amiwm
+AMIWM_MODULES = $(libdir)/amiwm/modules
 
 all : lib_all
 	@$(MAKE) local_all
@@ -91,15 +91,19 @@ kbdlexer.c : kbdlexer.l
 
 install : $(PROGS) $(MODULES) Xsession Xsession2 Xinitrc amiwm-init
 	-mkdir -p $(AMIWM_HOME)
-	-mkdir -p $(AMIWM_LIBS)
+	-mkdir -p $(AMIWM_MODULES)
 	$(INSTALL) $(STRIPFLAG) requestchoice $(AMIWM_HOME)/requestchoice
 	$(INSTALL) $(STRIPFLAG) config_util $(AMIWM_HOME)/config_util
 	$(INSTALL) $(STRIPFLAG) executecmd $(AMIWM_HOME)/executecmd
 	for module in $(MODULES); do \
 	  if [ "$$module" = "$(srcdir)/Background" ]; then \
-	    $(INSTALL) $$module $(AMIWM_LIBS)/Background; \
+	    $(INSTALL) $$module $(AMIWM_MODULES)/Background; \
 	  else \
-	    $(INSTALL) $(STRIPFLAG) $$module $(AMIWM_LIBS)/$$module; \
+	    if [ "$$module" = "$(srcdir)/Background_resize" ]; then \
+	      $(INSTALL) $$module $(AMIWM_MODULES)/Background_resize; \
+	    else \
+	      $(INSTALL) $(STRIPFLAG) $$module $(AMIWM_MODULES)/$$module; \
+	    fi; \
 	  fi; \
 	done
 	$(INSTALL) -m 644 $(srcdir)/system.amiwmrc $(AMIWM_HOME)/system.amiwmrc

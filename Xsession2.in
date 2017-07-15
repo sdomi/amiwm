@@ -1,4 +1,4 @@
-#!/bin/ksh 
+#!/bin/sh 
 
 unset SDT_ALT_SESSION
 unset SDT_ALT_HELLO

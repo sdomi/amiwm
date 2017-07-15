@@ -1,4 +1,4 @@
-#!/bin/ksh 
+#!/bin/sh 
 # AmiWM startup script
 
 xrdb $OPENWINHOME/lib/Xdefaults		# Load Default X11 resource database

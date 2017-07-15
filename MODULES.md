@@ -1,20 +1,41 @@
 ## Background module
 
-To get background images on your screens, use the Background module.
-The Module command should come after the Screen command, and the
-initstring should be the filename of the picture.  Example:
+To get background images (aka backdrops) on your screens,
+use the Background module. The Module command should come
+after the Screen command, and the initstring should be the
+filename of the picture.  Example:
 
-Screen "My Screen"
+Screen "Workbench Screen"
 Module "Background" "~/megumin.png"
 
 The Background module is really a shell script that requires the
 program 'display' from imagemagick package. Currently, it doesn't
 support any standard imagemagick parameters.
 
+## Background_stretch module
+
+Same as the Background module, but stretches your backdrop to size of
+your screen. Example:
+
+Screen "Workbench Screen"
+Module "Background_stretch" "~/megumin.png"
+
+Please note that this module will just stretch or downscale the image
+(depending on the size of the image) to your display ratio.
+If you don't want your image to look ugly, try the next module..
+
+## Background_resize module
+
+Same as the Background_stretch, but it cares about your display ratio.
+For example, if you've got a 16:9 screen but your backdrop image is
+4:3, it will get stretched, but it will still be displayed as a 4:3
+picture. The remaining part of the screen will be used to show the same
+image, but repeated.
+
 ## Keyboard module
 
 With the Keyboard module, you can bind window manager functions to keys
-on the keyboard.  The initstring should consist of keybindings on the
+on the keyboard. The initstring should consist of keybindings on the
 form
 
 modifiers<keysym>:where:func
