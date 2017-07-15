@@ -24,7 +24,8 @@ STRIPFLAG = -s
 
 PROGS = amiwm requestchoice executecmd ppmtoinfo config_util
 
-MODULES = $(srcdir)/Background $(srcdir)/Keyboard $(srcdir)/Background_resize
+MODULES = $(srcdir)/Background $(srcdir)/Keyboard $(srcdir)/Background_resize \
+	 $(srcdir)/Background_resize_norepeat $(srcdir)/Background_stretch
 
 OBJS  = main.o screen.o client.o frame.o icc.o \
 		icon.o menu.o diskobject.o gram.o lex.o rc.o \
@@ -39,7 +40,8 @@ SRCS = main.c screen.c client.c frame.c icc.c \
 DISTFILES = README README.modules INSTALL LICENSE amiwm.1 \
 	configure configure.in Makefile.in install-sh smakefile scoptions \
 	*.[chly] system.amiwmrc def_*.info *.map \
-	Background Background_resize Xresources.amiwm.in Amilogo.?m \
+	Background Background_resize Background_resize_norepeat \
+	Background_stretch Xresources.amiwm.in Amilogo.?m \
 	Xsession*.in Xinitrc.in amiwm-init libami/Makefile.in libami/*.[chly] \
 
 PACKAGENAME = amiwm
@@ -102,7 +104,11 @@ install : $(PROGS) $(MODULES) Xsession Xsession2 Xinitrc amiwm-init
 	    if [ "$$module" = "$(srcdir)/Background_resize" ]; then \
 	      $(INSTALL) $$module $(AMIWM_MODULES)/Background_resize; \
 	    else \
-	      $(INSTALL) $(STRIPFLAG) $$module $(AMIWM_MODULES)/$$module; \
+	      if [ "$$module" = "$(srcdir)/Background_stretch" ]; then \
+	        $(INSTALL) $$module $(AMIWM_MODULES)/Background_stretch; \
+	      else \
+	        $(INSTALL) $(STRIPFLAG) $$module $(AMIWM_MODULES)/$$module; \
+	      fi; \
 	    fi; \
 	  fi; \
 	done
