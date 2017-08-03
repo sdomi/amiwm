@@ -25,7 +25,7 @@ STRIPFLAG = -s
 PROGS = amiwm requestchoice executecmd ppmtoinfo config_util
 
 MODULES = $(srcdir)/Background $(srcdir)/Keyboard $(srcdir)/Background_resize \
-	 $(srcdir)/Background_stretch $(srcdir)/def_*.info
+	 $(srcdir)/Background_stretch $(srcdir)/def_tool.info
 
 OBJS  = main.o screen.o client.o frame.o icc.o \
 		icon.o menu.o diskobject.o gram.o lex.o rc.o \
@@ -107,7 +107,11 @@ install : $(PROGS) $(MODULES) Xsession Xsession2 Xinitrc amiwm-init
 	      if [ "$$module" = "$(srcdir)/Background_stretch" ]; then \
 	        $(INSTALL) $$module $(AMIWM_MODULES)/Background_stretch; \
 	      else \
-	        $(INSTALL) $(STRIPFLAG) $$module $(AMIWM_MODULES)/$$module; \
+		if [ "$$module" = "$(srcdir)/def_tool.info" ]; then \
+		    $(INSTALL) $$module $(AMIWM_MODULES)/def_tool.info; \
+		else \
+	    	    $(INSTALL) $(STRIPFLAG) $$module $(AMIWM_MODULES)/$$module; \
+	    	fi; \
 	      fi; \
 	    fi; \
 	  fi; \
