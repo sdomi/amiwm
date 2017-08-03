@@ -25,7 +25,7 @@ STRIPFLAG = -s
 PROGS = amiwm requestchoice executecmd ppmtoinfo config_util
 
 MODULES = $(srcdir)/Background $(srcdir)/Keyboard $(srcdir)/Background_resize \
-	 $(srcdir)/Background_stretch
+	 $(srcdir)/Background_stretch $(srcdir)/def_*.info
 
 OBJS  = main.o screen.o client.o frame.o icc.o \
 		icon.o menu.o diskobject.o gram.o lex.o rc.o \
