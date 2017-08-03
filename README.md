@@ -5,7 +5,7 @@ Amiga Workbench inspired window manager for Xorg.
 Before compiling, make sure that you have following packages installed:
 
 ```
-gcc make autoconf xorg xorg-xinit
+gcc make autoconf xorg xorg-xinit xorg-dev
 ```
 
 First, run configuration script:
