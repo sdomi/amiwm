@@ -1,3 +1,4 @@
+%option noyywrap
 %{
 #include <stdio.h>
 #include "gram.h"
@@ -6,7 +7,6 @@ extern int ParseError;
 extern FILE *rcfile;
 #undef yyin
 #define yyin rcfile
-#define yywrap() 1
 extern int parse_keyword(char *);
 void fixup_string(char *, char *);
 #define YY_SKIP_YYWRAP
