@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr//bin/env perl
 
 sub chompstring {
     my ($len, $rest)=unpack("Na*", $_[0]);

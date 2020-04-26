@@ -12,9 +12,9 @@ LIBS = @X_LIBS@ @X_PRE_LIBS@ -Llibami -lami @XT_LIB_KLUDGE@ -lXext -lXmu \
 	-lX11 @X_EXTRA_LIBS@ @LIBS@
 prefix = @prefix@
 exec_prefix = @exec_prefix@
-bindir = $(exec_prefix)/bin
-libdir = $(exec_prefix)/lib
-mandir = $(prefix)/man
+bindir = @bindir@
+libdir = @libdir@
+mandir = @mandir@
 INSTALL = @INSTALL@
 LN_S = @LN_S@
 RM = -rm -f
@@ -39,7 +39,7 @@ SRCS = main.c screen.c client.c frame.c icc.c \
 
 DISTFILES = README README.modules INSTALL LICENSE amiwm.1 \
 	configure configure.in Makefile.in install-sh smakefile scoptions \
-	*.[chly] system.amiwmrc def_*.info *.map \
+	*.[chly] system.amiwmrc.in def_*.info *.map \
 	Background Background_resize Background_resize_norepeat \
 	Background_stretch Xresources.amiwm.in Amilogo.?m \
 	Xsession*.in Xinitrc.in amiwm-init libami/Makefile.in libami/*.[chly] \
@@ -91,7 +91,7 @@ kbdmodule.h kbdmodule.c: kbdmodule.y
 kbdlexer.c : kbdlexer.l
 	$(LEX) -t $< > kbdlexer.c
 
-install : $(PROGS) $(MODULES) Xsession Xsession2 Xinitrc amiwm-init
+install : $(PROGS) $(MODULES) system.amiwmrc Xsession Xsession2 Xinitrc amiwm-init
 	-mkdir -p $(DESTDIR)$(AMIWM_HOME)
 	-mkdir -p $(DESTDIR)$(AMIWM_MODULES)
 	$(INSTALL) $(STRIPFLAG) requestchoice $(DESTDIR)$(AMIWM_HOME)/requestchoice
@@ -116,7 +116,7 @@ install : $(PROGS) $(MODULES) Xsession Xsession2 Xinitrc amiwm-init
 	    fi; \
 	  fi; \
 	done
-	$(INSTALL) -m 644 $(srcdir)/system.amiwmrc $(DESTDIR)$(AMIWM_HOME)/system.amiwmrc
+	$(INSTALL) -m 644 system.amiwmrc $(DESTDIR)$(AMIWM_HOME)/system.amiwmrc
 	$(INSTALL) -m 644 $(srcdir)/def_tool.info $(DESTDIR)$(AMIWM_HOME)/def_tool.info
 	$(INSTALL) -m 644 $(srcdir)/system.map $(DESTDIR)$(AMIWM_HOME)/system.map
 	$(INSTALL) -m 644 $(srcdir)/magicwb.map $(DESTDIR)$(AMIWM_HOME)/magicwb.map
@@ -213,18 +213,8 @@ Makefile: $(srcdir)/Makefile.in config.status
 libami/Makefile: $(srcdir)/libami/Makefile.in config.status
 	./config.status
 
-Xresources.amiwm: $(srcdir)/Xresources.amiwm.in
-	sed -e 's:[@]bindir[@]:$(bindir):g' -e 's:[@]AMIWM_HOME[@]:$(AMIWM_HOME):g' < $(srcdir)/Xresources.amiwm.in > Xresources.amiwm
-
-Xsession: $(srcdir)/Xsession.in config.status
-	sed -e 's:[@]bindir[@]:$(bindir):g' -e 's:[@]AMIWM_HOME[@]:$(AMIWM_HOME):g' < $(srcdir)/Xsession.in > Xsession
-
-Xsession2: $(srcdir)/Xsession2.in config.status
-	sed -e 's:[@]bindir[@]:$(bindir):g' -e 's:[@]AMIWM_HOME[@]:$(AMIWM_HOME):g' < $(srcdir)/Xsession2.in > Xsession2
-
-Xinitrc: $(srcdir)/Xinitrc.in config.status
-	sed -e 's:[@]bindir[@]:$(bindir):g' -e 's:[@]AMIWM_HOME[@]:$(AMIWM_HOME):g' < $(srcdir)/Xinitrc.in > Xinitrc
-
+system.amiwmrc Xresources.amiwm Xsession Xsession2 Xinitrc: %: $(srcdir)/%.in config.status
+	sed -e 's:[@]bindir[@]:$(bindir):g' -e 's:[@]AMIWM_HOME[@]:$(AMIWM_HOME):g' < "$<" > "$@"
 
 depend:: $(SRCS)
 	-@rm Makefile.bak

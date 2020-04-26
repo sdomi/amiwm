@@ -21,3 +21,4 @@ Makefile
 /lex.c
 /ppmtoinfo
 /requestchoice
+/system.amiwmrc
