@@ -5,7 +5,6 @@ CC = @CC@
 LEX = @LEX@
 YACC = @YACC@
 CFLAGS = @CFLAGS@
-YFLAGS = -d
 DEFS = @DEFS@
 ALL_CFLAGS = -I. -I@srcdir@ -I@srcdir@/libami $(DEFS) $(CFLAGS) @X_CFLAGS@
 LIBS = @X_LIBS@ @X_PRE_LIBS@ -Llibami -lami @XT_LIB_KLUDGE@ -lXext -lXmu \
@@ -63,7 +62,7 @@ lib_all :
 menu.o : menu.c
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -DAMIWM_HOME=\"$(AMIWM_HOME)\" $<
 
-rc.o : rc.c
+rc.o : rc.c gram.h
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -DAMIWM_HOME=\"$(AMIWM_HOME)\" $<
 
 diskobject.o : diskobject.c
@@ -76,17 +75,13 @@ ppmtoinfo.o : ppmtoinfo.c
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -DAMIWM_HOME=\"$(AMIWM_HOME)\" $<
 
 gram.h gram.c: gram.y
-	$(YACC) $(YFLAGS) $<
-	mv y.tab.c gram.c
-	mv y.tab.h gram.h
+	$(YACC) --defines=gram.h --output=gram.c $<
 
 lex.c : lex.l
 	$(LEX) -t $< > lex.c
 
 kbdmodule.h kbdmodule.c: kbdmodule.y
-	$(YACC) $(YFLAGS) $<
-	mv y.tab.c kbdmodule.c
-	mv y.tab.h kbdmodule.h
+	$(YACC) --defines=kbdmodule.h --output=kbdmodule.c $<
 
 kbdlexer.c : kbdlexer.l
 	$(LEX) -t $< > kbdlexer.c
