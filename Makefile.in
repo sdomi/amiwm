@@ -201,8 +201,8 @@ dist : version.h clean
 	  gzip $$tarname; \
 	)
 
-$(srcdir)/configure: $(srcdir)/configure.in
-	autoconf $(srcdir)/configure.in > $(srcdir)/configure
+$(srcdir)/configure: $(srcdir)/configure.ac
+	autoconf $(srcdir)/configure.ac > $(srcdir)/configure
 
 config.status: $(srcdir)/configure
 	$(srcdir)/configure
