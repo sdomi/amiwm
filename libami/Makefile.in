@@ -6,6 +6,7 @@ LEX = @LEX@
 YACC = @YACC@
 RANLIB = @RANLIB@
 CFLAGS = @CFLAGS@
+LDFLAGS = @LDFLAGS@
 DEFS = @DEFS@
 ALL_CFLAGS = -I@srcdir@ -I@top_srcdir@ $(DEFS) $(CFLAGS) @X_CFLAGS@
 LIBS = @X_LIBS@ @X_PRE_LIBS@ -lXext -lXmu -lX11 @X_EXTRA_LIBS@ @LIBS@

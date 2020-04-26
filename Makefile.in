@@ -5,6 +5,7 @@ CC = @CC@
 LEX = @LEX@
 YACC = @YACC@
 CFLAGS = @CFLAGS@
+LDFLAGS = @LDFLAGS@
 DEFS = @DEFS@
 ALL_CFLAGS = -I. -I@srcdir@ -I@srcdir@/libami $(DEFS) $(CFLAGS) @X_CFLAGS@
 LIBS = @X_LIBS@ @X_PRE_LIBS@ -Llibami -lami @XT_LIB_KLUDGE@ -lXext -lXmu \
@@ -142,28 +143,28 @@ cde-install : Xresources.amiwm Amilogo.bm Amilogo.pm
 
 
 amiwm : $(OBJS) $(LIBAMI)
-	$(CC) -o amiwm $(OBJS) $(LIBS)
+	$(CC) $(LDFLAGS) -o amiwm $(OBJS) $(LIBS)
 
 requestchoice : requestchoice.o $(LIBAMI)
-	$(CC) -o requestchoice requestchoice.o $(LIBS)
+	$(CC) $(LDFLAGS) -o requestchoice requestchoice.o $(LIBS)
 
 config_util : config_util.o $(LIBAMI)
-	$(CC) -o config_util config_util.o $(LIBS)
+	$(CC) $(LDFLAGS) -o config_util config_util.o $(LIBS)
 
 executecmd : executecmd.o $(LIBAMI)
-	$(CC) -o executecmd executecmd.o $(LIBS)
+	$(CC) $(LDFLAGS) -o executecmd executecmd.o $(LIBS)
 
 Filesystem : filesystem.o $(LIBAMI)
-	$(CC) -o Filesystem filesystem.o $(LIBS)
+	$(CC) $(LDFLAGS) -o Filesystem filesystem.o $(LIBS)
 
 Keyboard : kbdmodule.o kbdlexer.o $(LIBAMI)
-	$(CC) -o Keyboard kbdmodule.o kbdlexer.o $(LIBS)
+	$(CC) $(LDFLAGS) -o Keyboard kbdmodule.o kbdlexer.o $(LIBS)
 
 ppmtoinfo : ppmtoinfo.o
-	$(CC) -o ppmtoinfo ppmtoinfo.o -lm
+	$(CC) $(LDFLAGS) -o ppmtoinfo ppmtoinfo.o -lm
 
 localetest : localetest.o $(LIBAMI)
-	$(CC) -o localetest localetest.o $(LIBS)
+	$(CC) $(LDFLAGS) -o localetest localetest.o $(LIBS)
 
 clean :
 	$(RM) core $(PROGS) $(LIBAMI) Keyboard *.o libami/*.o
