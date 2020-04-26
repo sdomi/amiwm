@@ -8,6 +8,14 @@ void docmd(XEvent *e, void *callback)
   ((void (*)(Window))callback)(e->xany.window);
 }
 
+int yylex();
+
+char *progname;
+int yyerror(s) char *s;
+{
+    fprintf (stderr, "%s: error in input file:  %s\n", progname, s ? s : "");
+    return 0;
+}
 %}
 
 %union
@@ -54,14 +62,6 @@ command			: FUNCTION { $$=$1; }
 			;
 
 %%
-
-char *progname;
-
-int yyerror(s) char *s;
-{
-    fprintf (stderr, "%s: error in input file:  %s\n", progname, s ? s : "");
-    return 0;
-}
 
 int main(int argc, char *argv[])
 {

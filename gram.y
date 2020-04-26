@@ -13,7 +13,6 @@ extern void set_mwb_palette(void);
 extern void set_schwartz_palette(void);
 extern void set_custom_palette(char *fn);
 extern void add_toolitem(char *, char *, char *, int);
-extern Scrn *openscreen(char *, Window);
 extern void create_module(Scrn *, char *, char *);
 extern char *default_colors[NUMDRIPENS];
 extern char *default_screenfont, *label_font_name;
@@ -44,6 +43,17 @@ static void append_to(char **x, char *y)
 }
 
 static int ti_level=0;
+
+int yylex();
+
+extern char *progname;
+extern int ParseError;
+int yyerror(s) char *s;
+{
+    fprintf (stderr, "%s: error in input file:  %s\n", progname, s ? s : "");
+    ParseError = 1;
+    return 0;
+}
 %}
 
 %union
@@ -195,11 +205,3 @@ forcemove_policy : ALWAYS { $$ = FM_ALWAYS; }
 		 ;
 
 %%
-extern char *progname;
-extern int ParseError;
-int yyerror(s) char *s;
-{
-    fprintf (stderr, "%s: error in input file:  %s\n", progname, s ? s : "");
-    ParseError = 1;
-    return 0;
-}
