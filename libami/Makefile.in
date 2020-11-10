@@ -16,6 +16,7 @@ bindir = $(exec_prefix)/bin
 libdir = $(exec_prefix)/lib
 INSTALL = @INSTALL@
 LN_S = @LN_S@
+RM = -rm -f
 
 OBJS  = drawinfo.o module.o broker.o eventdispatcher.o mdscreen.o \
 	mdicon.o mdwindow.o kbdsupport.o hotkey.o \
@@ -28,6 +29,9 @@ SRCS = drawinfo.c module.c broker.c eventdispatcher.c mdscreen.c \
 	iffparse.c
 
 all : libami.a
+
+clean :
+	$(RM) *.o libami.a
 
 libami.a : $(OBJS)
 	ar rc libami.a $(OBJS)

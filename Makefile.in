@@ -57,6 +57,9 @@ local_all : $(PROGS) $(MODULES)
 lib_all :
 	@( cd libami; $(MAKE) all )
 
+lib_clean :
+	@( cd libami; $(MAKE) clean )
+
 .c.o:
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) $<
 
@@ -170,8 +173,8 @@ ppmtoinfo : ppmtoinfo.o
 localetest : localetest.o $(LIBAMI)
 	$(CC) -o localetest localetest.o $(LIBS)
 
-clean :
-	$(RM) core $(PROGS) $(LIBAMI) Keyboard *.o libami/*.o
+clean : lib_clean
+	$(RM) core $(PROGS) $(LIBAMI) Keyboard *.o
 	$(RM) lex.yy.c lex.c y.tab.c y.tab.h gram.h gram.c
 	$(RM) kbdlexer.c kbdmodule.h kbdmodule.c
 	$(RM) config.log
