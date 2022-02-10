@@ -296,11 +296,12 @@ int main(int argc, char *argv[])
     XNextEvent(dpy, &event);
     switch(event.type) {
     case Expose:
-      if(!event.xexpose.count)
+      if(!event.xexpose.count) {
 	if(event.xexpose.window == textwin)
 	  refresh_text();
 	else if((c=getchoice(event.xexpose.window)))
 	  refresh_choice(c);
+      }
       break;
     case LeaveNotify:
       if(depressed && event.xcrossing.window==selected->win) {
@@ -323,11 +324,12 @@ int main(int argc, char *argv[])
       }
       break;
     case ButtonRelease:
-      if(event.xbutton.button==Button1 && selected)
+      if(event.xbutton.button==Button1 && selected) {
 	if(depressed)
 	  endchoice();
 	else
 	  abortchoice();
+      }
       break;
     }
   }

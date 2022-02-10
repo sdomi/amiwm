@@ -505,12 +505,13 @@ struct DiskObject *GetDefDiskObject(LONG def_type)
 
   if(def_type<WBDISK || def_type>WBAPPICON)
     return NULL;
-  if(!icondir)
-    if(!(icondir = get_current_icondir()))
+  if(!icondir) {
+    if(!(icondir = get_current_icondir())) {
       return NULL;
-    else
+    } else {
       l = strlen(icondir);
-
+    }
+  }
 #ifdef HAVE_ALLOCA
   buf = alloca(l+18);
 #else

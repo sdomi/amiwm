@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <errno.h>
 #include <string.h>
 #include <signal.h>
@@ -267,11 +268,13 @@ static int m_write(int fd, char *ptr, int len)
   char *p=ptr;
   int r, tot=0;
   while(len>0) {
-    if((r=write(fd, p, len))<0)
-      if(errno==EINTR)
+    if((r=write(fd, p, len))<0) {
+      if(errno==EINTR) {
 	continue;
-      else
+      } else {
 	return r;
+      }
+    }
     if(!r)
       return tot;
     tot+=r;
@@ -293,22 +296,23 @@ int dispatch_event_to_broker(XEvent *e, unsigned long mask, struct module *m)
 {
   Client *c;
   Icon *i;
-  e->xany.display=(Display *)0;
+  /* XXX TODO: overloading display here seems .. dangerous? */
+  e->xany.display=(Display *)(uintptr_t) 0;
   if(!XFindContext(dpy, e->xany.window, client_context, (XPointer *)&c))
     if(e->xany.window==c->window)
-      e->xany.display=(Display *)1;
+      e->xany.display=(Display *)(uintptr_t) 1;
     else
-      e->xany.display=(Display *)2;
+      e->xany.display=(Display *)(uintptr_t) 2;
   else if(!XFindContext(dpy, e->xany.window, icon_context, (XPointer *)&i))
     if(e->xany.window==i->window)
-      e->xany.display=(Display *)3;
+      e->xany.display=(Display *)(uintptr_t) 3;
 
   while(m) {
     if(m->out_fd>=0 && ((m->broker.mask & mask)||(m->broker.exists && !mask))) {
       struct mcmd_event me;
       me.mask=mask;
       me.event=*e;
-      reply_module(m, (char *)&me, ~sizeof(me));
+      reply_module(m, (char *)&me, ~((int) sizeof(me)));
       return 1;
     }
     m=m->next;
@@ -506,7 +510,7 @@ static void module_input_callback(struct module *m)
     int t=(r>m->in_left? m->in_left:r);
     memcpy(m->in_ptr, p, t);
     m->in_ptr+=t;
-    if(!(m->in_left-=t))
+    if(!(m->in_left-=t)) {
       if(m->in_phase || ((!m->mcmd.len)&&(m->in_ptr=m->in_buf))) {
 	*m->in_ptr=0;
 	handle_module_cmd(m, m->in_buf, m->mcmd.len);
@@ -515,15 +519,17 @@ static void module_input_callback(struct module *m)
 	m->in_phase=0;
       } else {
 	if(m->mcmd.len>=m->in_buf_size) {
-	  if((m->in_buf_size<<=1)<=m->mcmd.len)
-	    m->in_buf_size=m->mcmd.len+1; {
-	  m->in_buf=realloc(m->in_buf, m->in_buf_size);
+	  /* Resize buffer if needed */
+	  if((m->in_buf_size<<=1)<=m->mcmd.len) {
+	    m->in_buf_size=m->mcmd.len+1;
+	    m->in_buf=realloc(m->in_buf, m->in_buf_size);
 	  }
 	}
 	m->in_ptr=m->in_buf;
 	m->in_left=m->mcmd.len;
 	m->in_phase++;
       }
+    }
     p+=t;
     r-=t;
   }

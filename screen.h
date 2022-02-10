@@ -27,4 +27,9 @@ typedef struct _Scrn {
 
 extern Scrn *scr, *front;
 
+extern void closescreen();
+extern Scrn * openscreen(char *, Window);
+extern void realizescreens();
+extern void screentoback();
+
 #endif
