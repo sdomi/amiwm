@@ -83,3 +83,10 @@ This binds the keys Meta-F1, Meta-F2 and Meta-F3 to front, back and
 iconify respectively.  The will only have effect inside windows and in
 window frames.  (These are the only places that front/iconfy/back has
 effect anyway.)
+
+## Filesystem module
+
+This is an april fools joke module, but at least it's a starting
+point for building out an icon on the desktop!
+
+Module "Filesystem" "/path/to/open"
