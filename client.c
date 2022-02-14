@@ -175,6 +175,7 @@ Client *createclient(Window w)
 
   XWindowAttributes attr;
   Client *c;
+  int b = 0;
 
   if(w==0) return 0;
   if(!XFindContext(dpy, w, client_context, (XPointer*)&c)) return c;
@@ -214,8 +215,17 @@ Client *createclient(Window w)
   checksizehints(c);
   c->zoomx=0;
   c->zoomy=scr->bh;
+  if ((c->sizehints.width_inc &&
+       c->sizehints.min_width+c->sizehints.width_inc<=c->sizehints.max_width)||
+      (c->sizehints.height_inc &&
+       c->sizehints.min_height+c->sizehints.height_inc<=c->sizehints.max_height))
+    b = prefs.sizeborder;
   if(c->sizehints.width_inc) {
-    c->zoomw=scr->width-c->sizehints.base_width-22;
+    c->zoomw=scr->width-c->sizehints.base_width;
+    if (b & Psizeright)
+      c->zoomw-=22;
+    else
+      c->zoomw-=8;
     c->zoomw-=c->zoomw%c->sizehints.width_inc;
     c->zoomw+=c->sizehints.base_width;
     if(c->zoomw>c->sizehints.max_width)
@@ -225,7 +235,11 @@ Client *createclient(Window w)
   } else
     c->zoomw=attr.width;
   if(c->sizehints.height_inc) {
-    c->zoomh=scr->height-c->sizehints.base_height-scr->bh-c->zoomy-2;
+    c->zoomh=scr->height-c->sizehints.base_height-scr->bh-c->zoomy;
+    if (b & Psizebottom)
+      c->zoomh -= 10;
+    else
+      c->zoomh -= 2;
     c->zoomh-=c->zoomh%c->sizehints.height_inc;
     c->zoomh+=c->sizehints.base_height;
     if(c->zoomh>c->sizehints.max_height)
