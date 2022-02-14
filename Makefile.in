@@ -25,7 +25,8 @@ STRIPFLAG = -s
 PROGS = amiwm requestchoice executecmd ppmtoinfo config_util
 
 MODULES = $(srcdir)/Background $(srcdir)/Keyboard $(srcdir)/Background_resize \
-	 $(srcdir)/Background_stretch $(srcdir)/def_tool.info $(srcdir)/Filesystem
+	 $(srcdir)/Background_stretch $(srcdir)/def_tool.info $(srcdir)/Filesystem \
+	 $(srcdir)/Launcher
 
 OBJS  = main.o screen.o client.o frame.o icc.o \
 		icon.o menu.o diskobject.o gram.o lex.o rc.o \
@@ -35,7 +36,7 @@ SRCS = main.c screen.c client.c frame.c icc.c \
 		icon.c menu.c diskobject.c gram.c lex.c rc.c \
 		module.c \
 		requestchoice.c executecmd.c kbdmodule.c kbdlexer.c \
-		config_util.c
+		config_util.c launchermodule.c
 
 DISTFILES = README README.modules INSTALL LICENSE amiwm.1 \
 	configure configure.in Makefile.in install-sh smakefile scoptions \
@@ -167,6 +168,9 @@ Filesystem : filesystem.o $(LIBAMI)
 Keyboard : kbdmodule.o kbdlexer.o $(LIBAMI)
 	$(CC) -o Keyboard kbdmodule.o kbdlexer.o $(LIBS)
 
+Launcher : launchermodule.o $(LIBAMI)
+	$(CC) -o Launcher launchermodule.o $(LIBS)
+
 ppmtoinfo : ppmtoinfo.o
 	$(CC) -o ppmtoinfo ppmtoinfo.o -lm
 
@@ -174,7 +178,7 @@ localetest : localetest.o $(LIBAMI)
 	$(CC) -o localetest localetest.o $(LIBS)
 
 clean : lib_clean
-	$(RM) core $(PROGS) $(LIBAMI) Keyboard *.o
+	$(RM) core $(PROGS) $(LIBAMI) Keyboard Launcher *.o
 	$(RM) lex.yy.c lex.c y.tab.c y.tab.h gram.h gram.c
 	$(RM) kbdlexer.c kbdmodule.h kbdmodule.c
 	$(RM) config.log
