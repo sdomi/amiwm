@@ -801,7 +801,7 @@ void menuaction(struct Item *i, struct Item *si)
       if(ti && ti->cmd) spawn(ti->cmd);
     }
     break;
-  case 4: /* Screens */
+  case 2: /* Screens */
     if(item==0) {
       openscreen("New Screen", DefaultRootWindow(dpy));
       realizescreens();
