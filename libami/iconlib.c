@@ -249,7 +249,7 @@ static LONG unpack_rle(unsigned char *src, LONG srclen, char *dst, LONG dstlen,
     }
   }
   if(src != srcn)
-    fprintf(stderr, "Warning:  Left %d bytes unused.\n", srcn-src);
+    fprintf(stderr, "Warning:  Left %d bytes unused.\n", (int) (srcn-src));
   return dst-dst0;
 }
 
