@@ -25,7 +25,8 @@ typedef struct _Client {
 #else
   XTextProperty title;
 #endif
-  XSizeHints sizehints;
+  /* This needs to be a pointer! */
+  XSizeHints *sizehints;
   struct _Style *style;
 } Client;
 

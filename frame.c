@@ -249,7 +249,7 @@ void reparent(Client *c)
   for(kg=keygrabs; kg; kg=kg->next)
     XGrabKey(dpy, kg->keycode, kg->modifiers, c->window, False, GrabModeAsync,
 	     GrabModeAsync);
-  cb=(resizable(&c->sizehints)? prefs.sizeborder:0);
+  cb=(resizable(c->sizehints)? prefs.sizeborder:0);
   c->close=creategadget(c, c->parent, 0, 0, 19, scr->bh);
   c->drag=creategadget(c, c->parent, 19, 0, 1, 1);
   if(c->wflags&WF_NOICONIFY)

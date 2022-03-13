@@ -129,22 +129,25 @@ void checksizehints(Client *c)
 {
   long supplied;
 
-  XGetWMNormalHints(dpy, c->window, &c->sizehints, &supplied);
-  if(!(c->sizehints.flags&PMinSize))
-    c->sizehints.min_width=c->sizehints.min_height=0;
-  if(!(c->sizehints.flags&PMaxSize))
-    c->sizehints.max_width=c->sizehints.max_height=1<<30;
-  if(!(c->sizehints.flags&PResizeInc))
-    c->sizehints.width_inc=c->sizehints.height_inc=1;
-  if(c->sizehints.flags&PBaseSize) {
-    c->sizehints.min_width=c->sizehints.base_width;
-    c->sizehints.min_height=c->sizehints.base_height;
+  XGetWMNormalHints(dpy, c->window, c->sizehints, &supplied);
+
+
+  if(!(c->sizehints->flags&PMinSize))
+    c->sizehints->min_width=c->sizehints->min_height=0;
+  if(!(c->sizehints->flags&PMaxSize)) {
+    c->sizehints->max_width=c->sizehints->max_height=1<<30;
   }
-  if(c->sizehints.min_width<1) c->sizehints.min_width=1;
-  if(c->sizehints.min_height<1) c->sizehints.min_height=1;
-  c->sizehints.base_width=c->sizehints.min_width;
-  c->sizehints.base_height=c->sizehints.min_height;
-  if(c->sizehints.flags&PWinGravity) c->gravity=c->sizehints.win_gravity;
+  if(!(c->sizehints->flags&PResizeInc))
+    c->sizehints->width_inc=c->sizehints->height_inc=1;
+  if(c->sizehints->flags&PBaseSize) {
+    c->sizehints->min_width=c->sizehints->base_width;
+    c->sizehints->min_height=c->sizehints->base_height;
+  }
+  if(c->sizehints->min_width<1) c->sizehints->min_width=1;
+  if(c->sizehints->min_height<1) c->sizehints->min_height=1;
+  c->sizehints->base_width=c->sizehints->min_width;
+  c->sizehints->base_height=c->sizehints->min_height;
+  if(c->sizehints->flags&PWinGravity) c->gravity=c->sizehints->win_gravity;
 }
 
 void setclientstate(Client *c, int state)
@@ -183,6 +186,7 @@ Client *createclient(Window w)
   XGetWindowAttributes(dpy, w, &attr);
 
   c = (Client *)calloc(1, sizeof(Client));
+  c->sizehints = XAllocSizeHints();
   c->scr = scr;
   c->window = w;
   c->parent = scr->root;
@@ -215,37 +219,37 @@ Client *createclient(Window w)
   checksizehints(c);
   c->zoomx=0;
   c->zoomy=scr->bh;
-  if ((c->sizehints.width_inc &&
-       c->sizehints.min_width+c->sizehints.width_inc<=c->sizehints.max_width)||
-      (c->sizehints.height_inc &&
-       c->sizehints.min_height+c->sizehints.height_inc<=c->sizehints.max_height))
+  if ((c->sizehints->width_inc &&
+       c->sizehints->min_width+c->sizehints->width_inc<=c->sizehints->max_width)||
+      (c->sizehints->height_inc &&
+       c->sizehints->min_height+c->sizehints->height_inc<=c->sizehints->max_height))
     b = prefs.sizeborder;
-  if(c->sizehints.width_inc) {
-    c->zoomw=scr->width-c->sizehints.base_width;
+  if(c->sizehints->width_inc) {
+    c->zoomw=scr->width-c->sizehints->base_width;
     if (b & Psizeright)
       c->zoomw-=22;
     else
       c->zoomw-=8;
-    c->zoomw-=c->zoomw%c->sizehints.width_inc;
-    c->zoomw+=c->sizehints.base_width;
-    if(c->zoomw>c->sizehints.max_width)
-      c->zoomw=c->sizehints.max_width;
-    if(c->zoomw<c->sizehints.min_width)
-      c->zoomw=c->sizehints.min_width;
+    c->zoomw-=c->zoomw%c->sizehints->width_inc;
+    c->zoomw+=c->sizehints->base_width;
+    if(c->zoomw>c->sizehints->max_width)
+      c->zoomw=c->sizehints->max_width;
+    if(c->zoomw<c->sizehints->min_width)
+      c->zoomw=c->sizehints->min_width;
   } else
     c->zoomw=attr.width;
-  if(c->sizehints.height_inc) {
-    c->zoomh=scr->height-c->sizehints.base_height-scr->bh-c->zoomy;
+  if(c->sizehints->height_inc) {
+    c->zoomh=scr->height-c->sizehints->base_height-scr->bh-c->zoomy;
     if (b & Psizebottom)
       c->zoomh -= 10;
     else
       c->zoomh -= 2;
-    c->zoomh-=c->zoomh%c->sizehints.height_inc;
-    c->zoomh+=c->sizehints.base_height;
-    if(c->zoomh>c->sizehints.max_height)
-      c->zoomh=c->sizehints.max_height;
-    if(c->zoomh<c->sizehints.min_height)
-      c->zoomh=c->sizehints.min_height;
+    c->zoomh-=c->zoomh%c->sizehints->height_inc;
+    c->zoomh+=c->sizehints->base_height;
+    if(c->zoomh>c->sizehints->max_height)
+      c->zoomh=c->sizehints->max_height;
+    if(c->zoomh<c->sizehints->min_height)
+      c->zoomh=c->sizehints->min_height;
   } else
     c->zoomh=attr.height;
   XSaveContext(dpy, w, client_context, (XPointer)c);
@@ -301,6 +305,8 @@ void rmclient(Client *c)
       rmicon(c->icon);
     if(c->window)
       XDeleteContext(dpy, c->window, client_context);
+    if (c->sizehints)
+      XFree(c->sizehints);
     free(c);
 }
 

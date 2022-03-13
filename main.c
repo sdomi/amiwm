@@ -1003,9 +1003,12 @@ int main(int argc, char *argv[])
 	}
 	break;
       case CreateNotify:
+
 	if(!XFindContext(dpy, event.xcreatewindow.window, client_context,
-			 (XPointer *)&c))
+			 (XPointer *)&c)) {
 	  break;
+	}
+
 	if(!event.xcreatewindow.override_redirect) {
 	  if(!(scr=getscreenbyroot(event.xcreatewindow.parent)))
 	    scr=front;
@@ -1429,26 +1432,26 @@ int main(int argc, char *argv[])
 	} else if(resizeclient) {
 	  int rw=rubberw, rh=rubberh;
 	  scr=resizeclient->scr;
-	  if(resizeclient->sizehints.width_inc) {
-	    rw=motionx-rubberx0-resizeclient->sizehints.base_width-
+	  if(resizeclient->sizehints->width_inc) {
+	    rw=motionx-rubberx0-resizeclient->sizehints->base_width-
 	      resizeclient->framewidth;
-	    rw-=rw%resizeclient->sizehints.width_inc;
-	    rw+=resizeclient->sizehints.base_width;
-	    if(rw>resizeclient->sizehints.max_width)
-	      rw=resizeclient->sizehints.max_width;
-	    if(rw<resizeclient->sizehints.min_width)
-	      rw=resizeclient->sizehints.min_width;
+	    rw-=rw%resizeclient->sizehints->width_inc;
+	    rw+=resizeclient->sizehints->base_width;
+	    if(rw>resizeclient->sizehints->max_width)
+	      rw=resizeclient->sizehints->max_width;
+	    if(rw<resizeclient->sizehints->min_width)
+	      rw=resizeclient->sizehints->min_width;
 	    rw+=resizeclient->framewidth;
 	  }
-	  if(resizeclient->sizehints.height_inc) {
-	    rh=motiony-rubbery0-resizeclient->sizehints.base_height-
+	  if(resizeclient->sizehints->height_inc) {
+	    rh=motiony-rubbery0-resizeclient->sizehints->base_height-
 	      resizeclient->frameheight;
-	    rh-=rh%resizeclient->sizehints.height_inc;
-	    rh+=resizeclient->sizehints.base_height;
-	    if(rh>resizeclient->sizehints.max_height)
-	      rh=resizeclient->sizehints.max_height;
-	    if(rh<resizeclient->sizehints.min_height)
-	      rh=resizeclient->sizehints.min_height;
+	    rh-=rh%resizeclient->sizehints->height_inc;
+	    rh+=resizeclient->sizehints->base_height;
+	    if(rh>resizeclient->sizehints->max_height)
+	      rh=resizeclient->sizehints->max_height;
+	    if(rh<resizeclient->sizehints->min_height)
+	      rh=resizeclient->sizehints->min_height;
 	    rh+=resizeclient->frameheight;
 	  }
           if(rw!=rubberw || rh!=rubberh) {
