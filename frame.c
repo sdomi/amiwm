@@ -178,6 +178,7 @@ void reparent(Client *c)
   extern struct mcmd_keygrab *keygrabs;
   char **cargv = NULL;
   int cargc;
+  int size_changed = 0;
 
   if(XGetTransientForHint(dpy, c->window, &leader) &&
      !XFindContext(dpy, leader, client_context, (XPointer *)&lc))
@@ -226,15 +227,58 @@ void reparent(Client *c)
   c->framewidth=8;
   c->frameheight=scr->bh+2;
   attr2.override_redirect=True;
+
+
   grav_map_win_to_frame(c, attr.x, attr.y, &c->x, &c->y);
+
+  /* Note: this is half of framewidth */
+  if ((c->x < 0) || (c->x > scr->width)) {
+    c->x = 0;
+  }
+  /* Note: this is the menu size, but no window framing */
+  if ((c->y < scr->bh) || (c->y > scr->height)) {
+    c->y = scr->bh;
+  }
+
+  /*
+   * Check to make sure we're not created larger than the
+   * available desktop size
+   */
+  if (attr.width > (scr->width - c->framewidth)) {
+    attr.width = (scr->width - c->framewidth);
+    size_changed = 1;
+  }
+  if (attr.height > (scr->height - c->frameheight)) {
+    attr.height = (scr->height - c->frameheight);
+    size_changed = 1;
+  }
+
+  c->pwidth = attr.width + c->framewidth;
+  c->pheight = attr.height + c->frameheight;
+
+  /*
+   * Note: if we adjusted c->pwidth / c->pheight then
+   * we need to call XResizeWindow on c->window.
+   *
+   * Do it before we reparent it just to make things
+   * easy.
+   */
+  if (size_changed == 1) {
+    XResizeWindow(dpy, c->window, c->pwidth-c->framewidth,
+    c->pheight-c->frameheight);
+  }
+
+  /* Create the parent window that'll have our decoration */
   c->parent=XCreateWindow(dpy, scr->back, c->x, c->y,
-			  c->pwidth=attr.width+8, c->pheight=attr.height+2+scr->bh,
+			  c->pwidth, c->pheight,
 			  0, CopyFromParent, InputOutput, CopyFromParent,
 			  CWOverrideRedirect, &attr2);
   XSaveContext(dpy, c->parent, client_context, (XPointer)c);
   XSaveContext(dpy, c->parent, screen_context, (XPointer)c->scr);
   XSetWindowBackground(dpy, c->parent, scr->dri.dri_Pens[BACKGROUNDPEN]);
   XSetWindowBorderWidth(dpy, c->window, 0);
+
+  /* Reparent time */
   XReparentWindow(dpy, c->window, c->parent, 4, scr->bh);
   XSelectInput(dpy, c->window, EnterWindowMask | LeaveWindowMask |
 	       ColormapChangeMask | PropertyChangeMask |
