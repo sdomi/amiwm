@@ -7,7 +7,7 @@ YACC = @YACC@
 CFLAGS = @CFLAGS@
 YFLAGS = -d
 DEFS = @DEFS@
-ALL_CFLAGS = -I. -I@srcdir@ -I@srcdir@/libami $(DEFS) $(CFLAGS) @X_CFLAGS@
+ALL_CFLAGS = -Wall -I. -I@srcdir@ -I@srcdir@/libami $(DEFS) $(CFLAGS) @X_CFLAGS@
 LIBS = @X_LIBS@ @X_PRE_LIBS@ -Llibami -lami @XT_LIB_KLUDGE@ -lXext -lXmu \
 	-lX11 @X_EXTRA_LIBS@ @LIBS@
 prefix = @prefix@
@@ -25,7 +25,8 @@ STRIPFLAG = -s
 PROGS = amiwm requestchoice executecmd ppmtoinfo config_util
 
 MODULES = $(srcdir)/Background $(srcdir)/Keyboard $(srcdir)/Background_resize \
-	 $(srcdir)/Background_stretch $(srcdir)/def_tool.info
+	 $(srcdir)/Background_stretch $(srcdir)/def_tool.info $(srcdir)/Filesystem \
+	 $(srcdir)/Launcher
 
 OBJS  = main.o screen.o client.o frame.o icc.o \
 		icon.o menu.o diskobject.o gram.o lex.o rc.o \
@@ -35,13 +36,13 @@ SRCS = main.c screen.c client.c frame.c icc.c \
 		icon.c menu.c diskobject.c gram.c lex.c rc.c \
 		module.c \
 		requestchoice.c executecmd.c kbdmodule.c kbdlexer.c \
-		config_util.c
+		config_util.c launchermodule.c
 
 DISTFILES = README README.modules INSTALL LICENSE amiwm.1 \
 	configure configure.in Makefile.in install-sh smakefile scoptions \
 	*.[chly] system.amiwmrc def_*.info *.map \
 	Background Background_resize Background_resize_norepeat \
-	Background_stretch Xresources.amiwm.in Amilogo.?m \
+	Background_stretch Launcher Xresources.amiwm.in Amilogo.?m \
 	Xsession*.in Xinitrc.in amiwm-init libami/Makefile.in libami/*.[chly] \
 
 PACKAGENAME = amiwm
@@ -56,6 +57,9 @@ local_all : $(PROGS) $(MODULES)
 
 lib_all :
 	@( cd libami; $(MAKE) all )
+
+lib_clean :
+	@( cd libami; $(MAKE) clean )
 
 .c.o:
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) $<
@@ -117,6 +121,9 @@ install : $(PROGS) $(MODULES) Xsession Xsession2 Xinitrc amiwm-init
 	  fi; \
 	done
 	$(INSTALL) -m 644 $(srcdir)/system.amiwmrc $(AMIWM_HOME)/system.amiwmrc
+	$(INSTALL) -m 644 $(srcdir)/def_disk.info $(AMIWM_HOME)/def_tool.info
+	$(INSTALL) -m 644 $(srcdir)/def_drawer.info $(AMIWM_HOME)/def_drawer.info
+	$(INSTALL) -m 644 $(srcdir)/def_project.info $(AMIWM_HOME)/def_project.info
 	$(INSTALL) -m 644 $(srcdir)/def_tool.info $(AMIWM_HOME)/def_tool.info
 	$(INSTALL) -m 644 $(srcdir)/system.map $(AMIWM_HOME)/system.map
 	$(INSTALL) -m 644 $(srcdir)/magicwb.map $(AMIWM_HOME)/magicwb.map
@@ -164,14 +171,17 @@ Filesystem : filesystem.o $(LIBAMI)
 Keyboard : kbdmodule.o kbdlexer.o $(LIBAMI)
 	$(CC) -o Keyboard kbdmodule.o kbdlexer.o $(LIBS)
 
+Launcher : launchermodule.o $(LIBAMI)
+	$(CC) -o Launcher launchermodule.o $(LIBS)
+
 ppmtoinfo : ppmtoinfo.o
 	$(CC) -o ppmtoinfo ppmtoinfo.o -lm
 
 localetest : localetest.o $(LIBAMI)
 	$(CC) -o localetest localetest.o $(LIBS)
 
-clean :
-	$(RM) core $(PROGS) $(LIBAMI) Keyboard *.o libami/*.o
+clean : lib_clean
+	$(RM) core $(PROGS) $(LIBAMI) Keyboard Launcher *.o
 	$(RM) lex.yy.c lex.c y.tab.c y.tab.h gram.h gram.c
 	$(RM) kbdlexer.c kbdmodule.h kbdmodule.c
 	$(RM) config.log

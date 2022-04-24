@@ -3,6 +3,18 @@
 
 #include "icon.h"
 
+/*
+ * Struct _Scrn - virtual desktop screen
+ *
+ * @root: root window for virtual desktop
+ * @back: background window
+ * @colormap: current colourmap
+ * @fh: font height for menu/window, including ascender/descender.
+ * @bh: title bar / menu bar height; fh + fixed padding.
+ * @icons: list of icons on this desktop.
+ * @firstselected: first selected icon on this desktop.
+ */
+
 typedef struct _Scrn {
   struct _Scrn *behind, *upfront;
   Window root, back, inputbox;
@@ -26,5 +38,10 @@ typedef struct _Scrn {
 } Scrn;
 
 extern Scrn *scr, *front;
+
+extern void closescreen();
+extern Scrn * openscreen(char *, Window);
+extern void realizescreens();
+extern void screentoback();
 
 #endif

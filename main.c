@@ -19,6 +19,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif
@@ -99,9 +100,6 @@ extern void menubar_enter(Window);
 extern void menubar_leave(Window);
 extern void *getitembyhotkey(KeySym);
 extern void menuaction(void *);
-extern void screentoback();
-extern void openscreen(char *, Window);
-extern void realizescreens(void);
 extern Scrn *getscreenbyroot(Window);
 extern void assimilate(Window, int, int);
 extern void deselect_all_icons(Scrn *);
@@ -245,13 +243,14 @@ void remove_fd_from_set(int fd)
   FD_CLR(fd, &master_fd_set);
 }
 
-void lookup_keysyms()
+void lookup_keysyms(Display *dpy, unsigned int *meta_mask,
+    unsigned int *switch_mask)
 {
   int i,j,k,maxsym,mincode,maxcode;
   XModifierKeymap *map=XGetModifierMapping(dpy);
   KeySym *kp, *kmap;
   unsigned int alt_mask = 0;
-  meta_mask=0, switch_mask=0;
+  *meta_mask=0, *switch_mask=0;
   XDisplayKeycodes(dpy, &mincode, &maxcode);
   kmap=XGetKeyboardMapping(dpy, mincode, maxcode-mincode+1, &maxsym);
   for(i=3; i<8; i++)
@@ -262,10 +261,10 @@ void lookup_keysyms()
 	  switch(*kp++) {
 	  case XK_Meta_L:
 	  case XK_Meta_R:
-	    meta_mask|=1<<i;
+	    *meta_mask|=1<<i;
 	    break;
 	  case XK_Mode_switch:
-	    switch_mask|=1<<i;
+	    *switch_mask|=1<<i;
 	    break;
 	  case XK_Alt_L:
 	  case XK_Alt_R:
@@ -274,9 +273,9 @@ void lookup_keysyms()
 	  }
   XFree(kmap);
   XFreeModifiermap(map);
-  if(meta_mask == 0)
-    meta_mask = (alt_mask? alt_mask :
-		 (switch_mask? switch_mask : Mod1Mask));
+  if(*meta_mask == 0)
+    *meta_mask = (alt_mask? alt_mask :
+		 (*switch_mask? *switch_mask : Mod1Mask));
 }
 
 
@@ -663,7 +662,7 @@ void starticondragging(Scrn *scr, XEvent *e)
 		    CWBackPixmap|CWOverrideRedirect|CWSaveUnder|CWColormap,
 		    &xswa);
 #ifdef HAVE_XSHAPE
-    if(shape_extn)
+    if(shape_extn) {
       if(i->innerwin) {
 	int bShaped, xbs, ybs, cShaped, xcs, ycs;
 	unsigned int wbs, hbs, wcs, hcs;
@@ -676,6 +675,7 @@ void starticondragging(Scrn *scr, XEvent *e)
 	XShapeCombineMask(dpy, dragiconlist[numdragicons].w, ShapeBounding,
 			  0, 0, i->maskpm, ShapeSet);
       }
+    }
 #endif
     XMapRaised(dpy, dragiconlist[numdragicons].w);
     numdragicons++;
@@ -787,7 +787,14 @@ static void instcmap(Colormap c)
 
 void internal_broker(XEvent *e)
 {
-  int event_loc=(int)e->xany.display;
+
+  /*
+   * XXX this is one of the things that the code in module.c
+   * is abusing to overload display with some numeric
+   * values.  Surely there's a better way to do this?
+   */
+  uintptr_t event_loc=(uintptr_t)e->xany.display;
+
   e->xany.display=dpy;
   if(event_loc==1) {
     XSendEvent(dpy, e->xany.window, False, 0, e);
@@ -895,7 +902,8 @@ int main(int argc, char *argv[])
   wm_curs=XCreateFontCursor(dpy, XC_top_left_arrow);
 
   FD_ZERO(&master_fd_set);
-  FD_SET((x_fd=ConnectionNumber(dpy)), &master_fd_set);
+  x_fd=ConnectionNumber(dpy);
+  FD_SET(x_fd, &master_fd_set);
   max_fd=x_fd+1;
 
   initting = 1;
@@ -995,9 +1003,12 @@ int main(int argc, char *argv[])
 	}
 	break;
       case CreateNotify:
+
 	if(!XFindContext(dpy, event.xcreatewindow.window, client_context,
-			 (XPointer *)&c))
+			 (XPointer *)&c)) {
 	  break;
+	}
+
 	if(!event.xcreatewindow.override_redirect) {
 	  if(!(scr=getscreenbyroot(event.xcreatewindow.parent)))
 	    scr=front;
@@ -1289,7 +1300,7 @@ int main(int argc, char *argv[])
 		XRaiseWindow(dpy, c->parent);
 	    }
 	    if(event.xbutton.window!=c->depth &&
-	       event.xbutton.window!=c->window)
+	       event.xbutton.window!=c->window) {
 	      if(c==doubleclient && (event.xbutton.time-last_double)<
 		 dblClickTime) {
 		XRaiseWindow(dpy, c->parent);
@@ -1297,6 +1308,7 @@ int main(int argc, char *argv[])
 		doubleclient=c;
 		last_double=event.xbutton.time;
 	      }
+	    }
 	    if(event.xbutton.window==c->drag) {
 	      forcemoving=(prefs.forcemove==FM_ALWAYS) ||
 		(event.xbutton.state & ShiftMask);
@@ -1420,26 +1432,26 @@ int main(int argc, char *argv[])
 	} else if(resizeclient) {
 	  int rw=rubberw, rh=rubberh;
 	  scr=resizeclient->scr;
-	  if(resizeclient->sizehints.width_inc) {
-	    rw=motionx-rubberx0-resizeclient->sizehints.base_width-
+	  if(resizeclient->sizehints->width_inc) {
+	    rw=motionx-rubberx0-resizeclient->sizehints->base_width-
 	      resizeclient->framewidth;
-	    rw-=rw%resizeclient->sizehints.width_inc;
-	    rw+=resizeclient->sizehints.base_width;
-	    if(rw>resizeclient->sizehints.max_width)
-	      rw=resizeclient->sizehints.max_width;
-	    if(rw<resizeclient->sizehints.min_width)
-	      rw=resizeclient->sizehints.min_width;
+	    rw-=rw%resizeclient->sizehints->width_inc;
+	    rw+=resizeclient->sizehints->base_width;
+	    if(rw>resizeclient->sizehints->max_width)
+	      rw=resizeclient->sizehints->max_width;
+	    if(rw<resizeclient->sizehints->min_width)
+	      rw=resizeclient->sizehints->min_width;
 	    rw+=resizeclient->framewidth;
 	  }
-	  if(resizeclient->sizehints.height_inc) {
-	    rh=motiony-rubbery0-resizeclient->sizehints.base_height-
+	  if(resizeclient->sizehints->height_inc) {
+	    rh=motiony-rubbery0-resizeclient->sizehints->base_height-
 	      resizeclient->frameheight;
-	    rh-=rh%resizeclient->sizehints.height_inc;
-	    rh+=resizeclient->sizehints.base_height;
-	    if(rh>resizeclient->sizehints.max_height)
-	      rh=resizeclient->sizehints.max_height;
-	    if(rh<resizeclient->sizehints.min_height)
-	      rh=resizeclient->sizehints.min_height;
+	    rh-=rh%resizeclient->sizehints->height_inc;
+	    rh+=resizeclient->sizehints->base_height;
+	    if(rh>resizeclient->sizehints->max_height)
+	      rh=resizeclient->sizehints->max_height;
+	    if(rh<resizeclient->sizehints->min_height)
+	      rh=resizeclient->sizehints->min_height;
 	    rh+=resizeclient->frameheight;
 	  }
           if(rw!=rubberw || rh!=rubberh) {

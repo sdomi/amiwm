@@ -46,6 +46,7 @@ extern void select_all_icons(Scrn *i);
 extern void mod_menuselect(struct module *, int, int, int);
 extern void setfocus(Window);
 extern void flushmodules();
+extern void wberror(Scrn *, char *);
 
 Scrn *mbdclick=NULL, *mbdscr=NULL;
 
@@ -361,7 +362,8 @@ void redraw_item(struct Item *i, Window w)
 void createmenubar()
 {
   XSetWindowAttributes attr;
-  struct Menu *m, *sm1, *sm2, *sm3;
+  struct Menu *m, *sm1;
+//  struct Menu *sm2, *sm3;
   struct ToolItem *ti;
   GC gc;
 
@@ -575,11 +577,13 @@ static void leave_item(struct Item *i, Window w)
 {
   if(i==activesubitem)
     activesubitem=NULL;
-  if(i==activeitem)
-    if(activesubmenu && i->sub==activesubmenu)
+  if(i==activeitem) {
+    if(activesubmenu && i->sub==activesubmenu) {
       return;
-    else
+    } else {
       activeitem=NULL;
+    }
+  }
   XSetWindowBackground(dpy, i->win, scr->dri.dri_Pens[BARBLOCKPEN]);
   XClearWindow(dpy, i->win);
   redraw_item(i, i->win);    
@@ -797,7 +801,7 @@ void menuaction(struct Item *i, struct Item *si)
       if(ti && ti->cmd) spawn(ti->cmd);
     }
     break;
-  case 4: /* Screens */
+  case 2: /* Screens */
     if(item==0) {
       openscreen("New Screen", DefaultRootWindow(dpy));
       realizescreens();

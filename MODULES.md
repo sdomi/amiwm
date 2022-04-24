@@ -83,3 +83,26 @@ This binds the keys Meta-F1, Meta-F2 and Meta-F3 to front, back and
 iconify respectively.  The will only have effect inside windows and in
 window frames.  (These are the only places that front/iconfy/back has
 effect anyway.)
+
+## Filesystem module
+
+This is an april fools joke module, but at least it's a starting
+point for building out an icon on the desktop!
+
+Module "Filesystem" "/path/to/open"
+
+## Launcher module
+
+This is a simple prototype launcher program that will place an
+icon on the current workbench screen so it can be double clicked
+to run.
+
+The module must be placed after the Screen definition you wish
+for it to show up in.
+
+The format is:
+
+Module "Launcher" "(<label>) (<icon>) (<command and args>)"
+
+The icon is one of the .info icons in the amiwm IconDir.
+

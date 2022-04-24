@@ -6,6 +6,7 @@
 #include "prefs.h"
 
 #include <string.h>
+#include <stdlib.h>
 
 #ifdef AMIGAOS
 #include <pragmas/xlib_pragmas.h>

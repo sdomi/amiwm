@@ -229,11 +229,12 @@ LONG FindArg(STRPTR template, STRPTR keyword)
       ch=*template++;
       if(!ch)
         return (kwindex == kwlen? argindex : -1);
-      if(ch == ',' || ch == '=' || ch == '/')
+      if(ch == ',' || ch == '=' || ch == '/') {
         if(kwindex == kwlen)
           return argindex;
         else
           break;
+      }
     } while(ToUpper(ch) == ToUpper(keyword[kwindex++]));
 
     while(ch != '=') {
@@ -353,7 +354,7 @@ struct RDArgs * ReadArgs(STRPTR template, LONG *array, struct RDArgs *rdargs)
       while(numargs-->0) {
         int isnumeric=0;
 
-        if((*swptr)&RA_MULTI)
+        if((*swptr)&RA_MULTI) {
 	  if(multinum) {
 	    ((Argtype *)array)->ptr=ra_alloc(rdargs,
 					     sizeof(Argtype)*(multinum+1));
@@ -365,6 +366,7 @@ struct RDArgs * ReadArgs(STRPTR template, LONG *array, struct RDArgs *rdargs)
             isnumeric=((*swptr)&RA_NUMERIC)!=0;
           }
 	  else ((Argtype *)array)->ptr=NULL;
+	}
         array=(LONG*)(((Argtype *)array)+1);
         if(!((sw=*swptr++)&RA_FOUND) && (sw&RA_ALWAYS)) {
           if((!lastmarg) || (sw&RA_KEYWORD) || multinum<2 ||

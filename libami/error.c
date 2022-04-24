@@ -40,7 +40,7 @@ BOOL Fault(LONG code, UBYTE *header, UBYTE *buffer, LONG len)
     strcpy((char *)buffer, syserrmsg[code-MIN_ERRNO]);
   } else {
     char number[6+4*sizeof(LONG)];
-    sprintf(number, "Error %ld", code);
+    sprintf(number, "Error %ld", (long int) code);
     if(len<strlen(number)+1)
       return FALSE;
     strcpy((char *)buffer, number);

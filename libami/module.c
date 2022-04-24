@@ -39,11 +39,12 @@ static int md_write(void *ptr, int len)
   char *p=ptr;
   int r, tot=0;
   while(len>0) {
-    if((r=write(md_out_fd, p, len))<0)
+    if((r=write(md_out_fd, p, len))<0) {
       if(errno==EINTR)
-	continue;
+        continue;
       else
-	return r;
+        return r;
+    }
     if(!r)
       return tot;
     tot+=r;
@@ -58,16 +59,18 @@ static int md_read(void *ptr, int len)
   char *p=ptr;
   int r, tot=0;
   while(len>0) {
-    if((r=read(md_in_fd, p, len))<0)
+    if((r=read(md_in_fd, p, len))<0) {
       if(errno==EINTR)
-	continue;
+        continue;
       else
-	return r;
-    if(!r)
+        return r;
+    }
+    if(!r) {
       if(tot)
-	return tot;
+        return tot;
       else
-	md_exit(0);
+        md_exit(0);
+    }
     tot+=r;
     p+=r;
     len-=r;
@@ -77,11 +80,13 @@ static int md_read(void *ptr, int len)
 
 static int md_int_load(int len)
 {
-  if(len>=md_int_len)
+  if(len>=md_int_len) {
     if(md_int_buf!=NULL)
       md_int_buf=realloc(md_int_buf, md_int_len=len+1);
     else
       md_int_buf=malloc(md_int_len=len+1);
+  }
+
   md_int_buf[len]='\0';
   return md_read(md_int_buf, len);
 }

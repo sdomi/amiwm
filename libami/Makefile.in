@@ -8,7 +8,7 @@ RANLIB = @RANLIB@
 CFLAGS = @CFLAGS@
 YFLAGS = -d
 DEFS = @DEFS@
-ALL_CFLAGS = -I@srcdir@ -I@top_srcdir@ $(DEFS) $(CFLAGS) @X_CFLAGS@
+ALL_CFLAGS = -Wall -I@srcdir@ -I@top_srcdir@ $(DEFS) $(CFLAGS) @X_CFLAGS@
 LIBS = @X_LIBS@ @X_PRE_LIBS@ -lXext -lXmu -lX11 @X_EXTRA_LIBS@ @LIBS@
 prefix = @prefix@
 exec_prefix = @exec_prefix@
@@ -16,6 +16,7 @@ bindir = $(exec_prefix)/bin
 libdir = $(exec_prefix)/lib
 INSTALL = @INSTALL@
 LN_S = @LN_S@
+RM = -rm -f
 
 OBJS  = drawinfo.o module.o broker.o eventdispatcher.o mdscreen.o \
 	mdicon.o mdwindow.o kbdsupport.o hotkey.o \
@@ -28,6 +29,9 @@ SRCS = drawinfo.c module.c broker.c eventdispatcher.c mdscreen.c \
 	iffparse.c
 
 all : libami.a
+
+clean :
+	$(RM) *.o libami.a
 
 libami.a : $(OBJS)
 	ar rc libami.a $(OBJS)

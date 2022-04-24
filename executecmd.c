@@ -232,7 +232,7 @@ void strkey(XKeyEvent *e)
     if(cur_pos) {
 #ifdef USE_FONTSETS
       int p=cur_pos;
-      int z;
+//      int z;
       while(p>0) {
 	--p;
 	if(((int)mbrlen(cmdline+p, cur_pos-p, NULL))>0) {
@@ -529,7 +529,7 @@ int main(int argc, char *argv[])
 #endif
     switch(event.type) {
     case Expose:
-      if(!event.xexpose.count)
+      if(!event.xexpose.count) {
 	if(event.xexpose.window == mainwin)
 	  refresh_main();	
 	else if(event.xexpose.window == strwin)
@@ -538,6 +538,7 @@ int main(int argc, char *argv[])
 	  refresh_button(ok, ok_txt, 1);
 	else if(event.xexpose.window == cancel)
 	  refresh_button(cancel, cancel_txt, 2);
+      }
     case LeaveNotify:
       if(depressed && event.xcrossing.window==button[selected]) {
 	depressed=0;
@@ -565,11 +566,12 @@ int main(int argc, char *argv[])
       }
       break;
     case ButtonRelease:
-      if(event.xbutton.button==Button1 && selected)
+      if(event.xbutton.button==Button1 && selected) {
 	if(depressed)
 	  endchoice();
 	else
 	  abortchoice();
+      }
       break;
     case KeyPress:
       if(stractive)

@@ -6,6 +6,14 @@
 
 struct _Icon;
 struct _Scrn;
+
+/*
+ * struct _Client - application client information.
+ *
+ * @next: next client in list.
+ * @scr: virtual desktop this client belongs to.
+ * @colormap: current colormap.
+ */
 typedef struct _Client {
   struct _Client *next;
   struct _Scrn *scr;
@@ -25,7 +33,8 @@ typedef struct _Client {
 #else
   XTextProperty title;
 #endif
-  XSizeHints sizehints;
+  /* This needs to be a pointer! */
+  XSizeHints *sizehints;
   struct _Style *style;
 } Client;
 

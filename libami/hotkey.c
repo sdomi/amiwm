@@ -67,7 +67,7 @@ static void lookup_hotkey(struct hotkey *hk)
     if((hk->keysym&~0x20)>=XK_A && (hk->keysym&~0x20)<=XK_Z)
       hk->keycode=XKeysymToKeycode(dpy, hk->keysym^0x20);
 
-  if(hk->keycode && keymap)
+  if(hk->keycode && keymap) {
     if(keymap[(hk->keycode-kbd_mincode)*kbd_maxsym])
       ;
     else if(kbd_maxsym>1 && keymap[(hk->keycode-kbd_mincode)*kbd_maxsym+1])
@@ -76,6 +76,7 @@ static void lookup_hotkey(struct hotkey *hk)
       hk->modifiers|=switch_mask;
     else if(kbd_maxsym>3 && keymap[(hk->keycode-kbd_mincode)*kbd_maxsym+3])
       hk->modifiers|=ShiftMask|switch_mask;
+  }
 }
 
 static void rethink_keymap()
