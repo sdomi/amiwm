@@ -98,6 +98,7 @@ fi
 
 AC_MSG_CHECKING([byteorder])
 AC_TRY_RUN([
+#include <stdlib.h>
 int main()
 {
   union { int i; char c[sizeof(int)]; } v;
