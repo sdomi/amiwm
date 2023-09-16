@@ -30,7 +30,7 @@ SRCS = drawinfo.c module.c broker.c eventdispatcher.c mdscreen.c \
 all : libami.a
 
 libami.a : $(OBJS)
-	ar rc libami.a $(OBJS)
+	$(AR) rc libami.a $(OBJS)
 	$(RANLIB) libami.a
 
 .c.o:
