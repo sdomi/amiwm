@@ -12,9 +12,6 @@
 #ifdef HAVE_SYS_WAIT_H
 #include <sys/wait.h>
 #endif
-#ifdef HAVE_SYS_TIME_H
-#include <sys/time.h>
-#endif
 #ifdef HAVE_SYS_RESOURCE_H
 #include <sys/resource.h>
 #endif
@@ -41,7 +38,6 @@ extern Display *dpy;
 extern void add_fd_to_set(int);
 extern void remove_fd_from_set(int);
 
-extern void screentoback();
 extern void raiselowerclient(Client *, int);
 extern void wberror(Scrn *, char *);
 

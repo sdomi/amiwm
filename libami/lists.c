@@ -2,6 +2,8 @@
 
 #ifndef AMIGAOS
 
+#include <string.h>
+
 void NewList(struct List *list)
 {
   list->lh_TailPred = (struct Node *)&list->lh_Head;

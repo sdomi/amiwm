@@ -24,11 +24,11 @@ HOME_XINITRC="$HOME/.xinitrc"
 
     if [ -f $XINITRC ]; then
 	echo "using xinitrc file: $XINITRC"
-        /bin/ksh $XINITRC
+        /bin/sh $XINITRC
     else
 	echo "xinitrc file: $XINITRC not found"
 	if [ -f $DEFAULT_XINITRC ]; then
 	    echo "using xinitrc: $DEFAULT_XINITRC"
-	    /bin/ksh $DEFAULT_XINITRC 
+	    /bin/sh $DEFAULT_XINITRC
 	fi
     fi

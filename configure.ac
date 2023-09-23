@@ -26,7 +26,6 @@ AC_C_CONST
 AC_C_CHAR_UNSIGNED
 AC_TYPE_PID_T
 AC_TYPE_SIZE_T
-AC_HEADER_TIME
 AC_STRUCT_TM
 
 AC_FUNC_ALLOCA
@@ -99,6 +98,7 @@ fi
 
 AC_MSG_CHECKING([byteorder])
 AC_TRY_RUN([
+#include <stdlib.h>
 int main()
 {
   union { int i; char c[sizeof(int)]; } v;

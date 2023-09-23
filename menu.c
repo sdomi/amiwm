@@ -46,6 +46,7 @@ extern void select_all_icons(Scrn *i);
 extern void mod_menuselect(struct module *, int, int, int);
 extern void setfocus(Window);
 extern void flushmodules();
+extern void wberror(Scrn *, char *);
 
 Scrn *mbdclick=NULL, *mbdscr=NULL;
 

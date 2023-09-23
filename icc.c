@@ -5,6 +5,7 @@
 #include "style.h"
 #include "prefs.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 #ifdef AMIGAOS
